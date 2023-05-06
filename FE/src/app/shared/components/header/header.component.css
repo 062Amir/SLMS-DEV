@@ -1,0 +1,5 @@
+li.dropdown:last-child .dropdown-menu {
+  position: absolute;
+  right: 0;
+  left: auto;
+}

@@ -1,0 +1,16 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <a routerLink="/staff" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
+          <h1 class="showcase-title h2">Add New Staff Member</h1>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <app-add-user-form [userRole]="userRoleType.STAFF" [defaultDepartment]="loggedInUser.department"
+        [disableDepartment]="true" (formSubmit)="onSubmit($event)"></app-add-user-form>
+    </section>
+  </div>
+</div>

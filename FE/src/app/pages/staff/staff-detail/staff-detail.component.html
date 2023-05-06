@@ -1,0 +1,50 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <a routerLink="/staff" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
+          <h1 class="showcase-title h2">Staff Member Details</h1>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <div class="card" *ngIf="staffInfo">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 mb-2">
+              <app-user-img [imagePath]="staffInfo.profileImage" [imgSize]="100"></app-user-img>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Name:</label>
+              <p>{{staffInfo.name || ''}}</p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Email:</label>
+              <p>
+                <a class="text-dark" href="mailto:{{staffInfo.email || ''}}">{{staffInfo.email || ''}}</a>
+              </p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Username:</label>
+              <p>{{staffInfo.userName || ''}}</p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Contact Number:</label>
+              <p><a class="text-dark" href="tel:{{staffInfo.contactNumber || ''}}">{{staffInfo.contactNumber || ''}}</a>
+              </p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Department:</label>
+              <p>{{staffInfo.department || ''}}</p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Added On:</label>
+              <p>{{staffInfo.createdAt | date : 'mediumDate'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

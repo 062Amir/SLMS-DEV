@@ -1,0 +1,59 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <a routerLink="/leaves" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
+          <h1 class="showcase-title h2">Add New Leave</h1>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <form [formGroup]="addLeaveForm">
+        <div class="row">
+          <div class="col-md-6 col-12 mb-2">
+            <div class="form-group">
+              <label for="fromDate" class="form-label">From Date *</label>
+              <div class="input-group">
+                <input class="form-control" id="fromDate" placeholder="yyyy-mm-dd" formControlName="fromDate"
+                  [minDate]="fromMinDate" ngbDatepicker #fromDate="ngbDatepicker">
+                <button class="btn btn-outline-secondary" (click)="fromDate.toggle()" type="button"><i
+                    class="fa-solid fa-calendar-days"></i></button>
+              </div>
+              <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('fromDate', addLeaveForm)">This
+                field is required</small>
+            </div>
+          </div>
+          <div class="col-md-6 col-12 mb-2">
+            <div class="form-group">
+              <label for="toDate" class="form-label">To Date *</label>
+              <div class="input-group">
+                <input class="form-control" id="toDate" placeholder="yyyy-mm-dd" formControlName="toDate"
+                  [minDate]="toMinDate" ngbDatepicker #toDate="ngbDatepicker">
+                <button class="btn btn-outline-secondary" (click)="toDate.toggle()" type="button"><i
+                    class="fa-solid fa-calendar-days"></i></button>
+              </div>
+              <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('toDate', addLeaveForm)">This
+                field is required</small>
+            </div>
+          </div>
+          <div class="col-md-12 col-12 mb-2">
+            <div class="form-group">
+              <label for="reason" class="form-label">Reason *</label>
+              <textarea class="form-control" id="reason" formControlName="reason" rows="3"></textarea>
+              <small class="form-text text-danger"
+                *ngIf="utilSvc.isFieldInvalid('reason', addLeaveForm, 'required')">This
+                field is required</small>
+              <small class="form-text text-danger"
+                *ngIf="utilSvc.isFieldInvalid('reason', addLeaveForm, 'customRequired')">Please provide
+                valid reason</small>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4 col-12 mt-2">
+            <button class="btn btn-primary btn-block" (click)="onSubmit()">Submit</button>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

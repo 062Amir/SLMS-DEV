@@ -1,0 +1,82 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <h1 class="showcase-title h2">Staff Members</h1>
+        </div>
+        <div class="col-md-6 col-6 text-end">
+          <a routerLink="/staff/new" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Member</a>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <form [formGroup]="filterForm">
+        <div class="row mb-4 ">
+          <div class="col-md-6 col-12 mb-2">
+            <div class="form-group">
+              <label for="search" class="form-label">Search</label>
+              <input type="text" class="form-control" id="search" placeholder="Search..." formControlName="search">
+            </div>
+          </div>
+          <div class="col-md-6 col-12 mb-2">
+            <div class="form-group">
+              <label for="searchFor" class="form-label">Search For</label>
+              <select class="form-select" id="searchFor" formControlName="searchFor">
+                <option value="name_like">Name</option>
+                <option value="email_like">Email</option>
+                <option value="userName_like">Username</option>
+                <option value="contactNumber_like">Contact Number</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-12 mt-2 text-end">
+            <button class="btn btn-primary" (click)="applyFilters()">Apply</button>
+            <button class="btn btn-secondary ms-3" (click)="resetFilters()">Reset</button>
+          </div>
+        </div>
+      </form>
+      <!-- Table View Start -->
+      <div class="row pt-2">
+        <div class="col">
+          <div class="table-wrapper bg-light table-responsive">
+            <app-table [sortOptions]="sortOptions" [defaultField]="'createdAt'" (sortChange)="onSortChange($event)">
+              <tbody>
+                <tr *ngFor="let staff of staffData.data">
+                  <td>
+                    <app-user-img [imagePath]="staff.profileImage" [imgSize]="40"></app-user-img>
+                  </td>
+                  <td>
+                    {{ staff.name || "" }}
+                  </td>
+                  <td>
+                    <a class="text-dark" href="mailto:{{staff.email || ''}}">{{staff.email || ''}}</a>
+                  </td>
+                  <td><a class="text-dark" href="tel:{{staff.contactNumber || ''}}">{{staff.contactNumber || ''}}</a>
+                  </td>
+                  <td>{{ staff.userName || "" }}</td>
+                  <td>
+                    {{staff.createdAt | date : 'mediumDate'}}
+                  </td>
+                  <td>
+                    <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/staff', staff.userId]"
+                      ngbTooltip="View Details"><i class="fa-solid fa-eye"></i></a>
+                    <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteStaffMember(staff)"
+                      ngbTooltip="Delete Member"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </app-table>
+            <div class="text-center" *ngIf="!staffData.data?.length">
+              <p class="helper-text"><span translate>No records available.</span></p>
+            </div>
+            <ngb-pagination *ngIf="staffData.total" class="table-pagination" [collectionSize]="staffData.total"
+              [(page)]="pageNumber" [pageSize]="pageCount" [maxSize]="3" (pageChange)="onPageChange()"
+              aria-label="Default pagination" [boundaryLinks]="true"></ngb-pagination>
+          </div>
+        </div>
+      </div>
+      <!-- Table View End -->
+    </section>
+  </div>
+</div>
