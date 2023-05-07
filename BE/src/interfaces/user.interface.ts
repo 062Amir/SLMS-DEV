@@ -1,7 +1,7 @@
 import { UserRoles } from "../data/app.constants";
 
 export interface IUser {
-  id?: number | string;
+  _id?: number | string;
   name: string;
   userName: string;
   email: string;

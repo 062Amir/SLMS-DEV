@@ -1,9 +1,11 @@
 export enum AppMessages {
   DEFAULT_ERROR = "An unexpected error occured, please try again later",
-  SESSION_EXPIRED = "Session expired",
+  SESSION_EXPIRED = "Invalid Session/Session Expired",
   USER_ALREADY_EXISTS = "User already exists with this contact number/email/username.",
   INVALID_CREDENTIALS = "Invalid credentials",
   ACCOUNT_INACTIVE = "Account is inactive, please contact to your HOD",
+  DEPARTMENT_EXIST = "Department already exists with this name",
+  DEPARTMENT_NOT_EXIST = "Department not exist",
 }
 
 export enum UserRoles {
@@ -20,6 +22,7 @@ export enum SchemaNames {
 export enum ValidationKeys {
   USER = "User",
   LOGIN = "Login",
+  DEPARTMENT = "Department",
 }
 
 export enum HttpStatus {

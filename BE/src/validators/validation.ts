@@ -19,6 +19,11 @@ const schemas = {
     userName: Joi.string().required(),
     password: Joi.string().required().min(8),
   }),
+  [ValidationKeys.DEPARTMENT as string]: Joi.object({
+    name: Joi.string().required(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date(),
+  }),
 };
 
 const validate = (key: `${ValidationKeys}`, reqBody: any): boolean | string => {
