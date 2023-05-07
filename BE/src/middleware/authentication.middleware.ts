@@ -1,10 +1,10 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { AppMessages, HttpStatus } from "../data/app.constants";
 
-const authentication = (req: any, res: Response, next: NextFunction) => {
+const authentication = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.headers && req.headers.token ? req.headers.token.split("Bearer ")[1] : "";
+    const token = req.headers && req.headers.authorization ? req.headers.authorization.split("Bearer ")[1] : "";
     const decodedToken: any = jwt.verify(token, process.env.TOKEN_SECRET_KEY || "");
     req.user = decodedToken.user;
     next();

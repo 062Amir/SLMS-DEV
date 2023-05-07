@@ -6,6 +6,12 @@ import { AppError } from "../classes/app-error.class";
 
 const departmentController = Router();
 
+/*
+  @desc: Get all departments
+  @route: /departments
+  @access: Public
+  @role: Any
+*/
 departmentController.get("/", async (req: Request, res: Response) => {
   try {
     const departments = await getDepartments();
@@ -15,6 +21,12 @@ departmentController.get("/", async (req: Request, res: Response) => {
   }
 });
 
+/*
+  @desc: Get single department
+  @route: /departments/:id
+  @access: Private
+  @role: Any
+*/
 departmentController.get("/:id", authentication, async (req: Request, res: Response) => {
   try {
     const department = await getSingleDepartment(req.params.id);

@@ -12,8 +12,6 @@ const schemas = {
     role: Joi.string().valid(UserRoles.HOD, UserRoles.STAFF).required(),
     profileImage: Joi.any(),
     isActive: Joi.boolean(),
-    createdAt: Joi.date(),
-    updatedAt: Joi.date(),
   }),
   [ValidationKeys.LOGIN as string]: Joi.object({
     userName: Joi.string().required(),
@@ -21,8 +19,6 @@ const schemas = {
   }),
   [ValidationKeys.DEPARTMENT as string]: Joi.object({
     name: Joi.string().required(),
-    createdAt: Joi.date(),
-    updatedAt: Joi.date(),
   }),
 };
 
