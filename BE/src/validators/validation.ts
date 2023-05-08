@@ -2,7 +2,7 @@ import * as Joi from "joi";
 import { UserRoles, ValidationKeys } from "../data/app.constants";
 
 const schemas = {
-  [ValidationKeys.USER as string]: Joi.object({
+  [ValidationKeys.NEW_USER]: Joi.object({
     name: Joi.string().required(),
     userName: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -13,11 +13,21 @@ const schemas = {
     profileImage: Joi.any(),
     isActive: Joi.boolean(),
   }),
-  [ValidationKeys.LOGIN as string]: Joi.object({
+  [ValidationKeys.UPDATE_USER]: Joi.object({
+    name: Joi.string().required(),
+    userName: Joi.string().required(),
+    email: Joi.string().email().required(),
+    contactNumber: Joi.string().required(),
+    profileImage: Joi.any(),
+  }),
+  [ValidationKeys.ACTIVATE_USER]: Joi.object({
+    isActive: Joi.boolean().valid(true, false).required(),
+  }),
+  [ValidationKeys.LOGIN]: Joi.object({
     userName: Joi.string().required(),
     password: Joi.string().required().min(8),
   }),
-  [ValidationKeys.DEPARTMENT as string]: Joi.object({
+  [ValidationKeys.DEPARTMENT]: Joi.object({
     name: Joi.string().required(),
   }),
 };

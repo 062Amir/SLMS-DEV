@@ -7,6 +7,15 @@ export enum AppMessages {
   ACCOUNT_INACTIVE = "Account is inactive, please contact to your HOD",
   DEPARTMENT_EXIST = "Department already exists with this name",
   DEPARTMENT_NOT_EXIST = "Department not exist",
+  USER_NOT_EXIST = "User not exist",
+  ONLY_IMAGE_ALLOWED = "Only image files are allowed!",
+  INVALID_IMAGE = "Invalid image file",
+}
+
+export enum AppDefaults {
+  FILE_SIZE_LIMIT = 1 * 1024 * 1024, // keep images size < 2 MB
+  USER_PROFILE_FIELD_NAME = "profileImage",
+  FIREBASE_STORAGE_FOLDER_NAME = "user-profiles",
 }
 
 export enum UserRoles {
@@ -21,9 +30,17 @@ export enum SchemaNames {
 }
 
 export enum ValidationKeys {
-  USER = "User",
-  LOGIN = "Login",
-  DEPARTMENT = "Department",
+  NEW_USER = "new_user",
+  UPDATE_USER = "update_user",
+  ACTIVATE_USER = "activate_user",
+  LOGIN = "login",
+  DEPARTMENT = "department",
+}
+
+export enum ImageMimeType {
+  "image/png" = "png",
+  "image/jpeg" = "jpg",
+  "image/jpg" = "jpg",
 }
 
 export enum HttpStatus {

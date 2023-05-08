@@ -4,12 +4,12 @@ import { ILoginCredentials } from "../interfaces/login-credentials.interface";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
 import validate from "../validators/validation";
-import { compareBcryptValue } from "./util.service";
+import { compareBcryptValue, encodeBase64 } from "./util.service";
 import * as jwt from "jsonwebtoken";
 
 interface ILoginResponse {
   token: string;
-  user: IUser;
+  user: IUser | string;
 }
 
 const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
@@ -33,9 +33,10 @@ const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
   }
 
   user = { ...user.toJSON(), password: "" };
+  const encryptedUser = encodeBase64(encodeBase64(user));
 
   // Creating token
-  const token = jwt.sign({ user }, process.env.TOKEN_SECRET_KEY || "");
+  const token = jwt.sign({ user: encryptedUser }, process.env.TOKEN_SECRET_KEY || "", { expiresIn: "1d" });
   return { token, user };
 };
 

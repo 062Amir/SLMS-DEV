@@ -1,13 +1,24 @@
 import { Request, Response, Router } from "express";
-import { HttpStatus } from "../data/app.constants";
+import { AppMessages, HttpStatus } from "../data/app.constants";
 import { createUser } from "../services/user.service";
 import { login } from "../services/auth.service";
+import { uploadFileOnFirebase } from "../services/upload.service";
+import imageValidator from "../validators/image.validator";
+import { AppError } from "../classes/app-error.class";
 
 const authController = Router();
 
-authController.post("/register", async (req: Request, res: Response) => {
+authController.post("/register", imageValidator, async (req: Request, res: Response) => {
   try {
-    const user = await createUser({ ...req.body, isActive: false });
+    // TODO: File error to be handle
+    let uploadedFileUrl = null;
+    if (req.file) {
+      uploadedFileUrl = await uploadFileOnFirebase(req.file as Express.Multer.File);
+      if (!uploadedFileUrl) {
+        throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.INVALID_IMAGE);
+      }
+    }
+    const user = await createUser({ ...req.body, isActive: false, profileImage: uploadedFileUrl });
     res.status(HttpStatus.OK).json(user);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });

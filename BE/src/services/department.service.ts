@@ -9,7 +9,7 @@ const getDepartments = async (): Promise<IDepartment[]> => {
 };
 
 const createDepartment = async (reqBody: IDepartment): Promise<IDepartment> => {
-  // Validating user before saving into DB
+  // Validating department before saving into DB
   const errorMessage = validate(ValidationKeys.DEPARTMENT, reqBody);
   if (errorMessage) {
     throw new AppError(HttpStatus.BAD_REQUEST, errorMessage);
@@ -33,7 +33,7 @@ const getSingleDepartment = async (id: string): Promise<IDepartment | null> => {
 };
 
 const updateDepartment = async (id: string, reqBody: IDepartment): Promise<any> => {
-  // Validating user before saving into DB
+  // Validating department before saving into DB
   const errorMessage = validate(ValidationKeys.DEPARTMENT, reqBody);
   if (errorMessage) {
     throw new AppError(HttpStatus.BAD_REQUEST, errorMessage);
@@ -44,8 +44,7 @@ const updateDepartment = async (id: string, reqBody: IDepartment): Promise<any> 
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.DEPARTMENT_NOT_EXIST);
   }
 
-  await Department.findByIdAndUpdate({ _id: id }, { $set: { name: reqBody.name } });
-  return { _id: id };
+  return await Department.findByIdAndUpdate(id, reqBody, { new: true });
 };
 
 const deleteDepartment = async (id: string): Promise<any> => {
