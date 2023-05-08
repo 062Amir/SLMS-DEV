@@ -1,6 +1,7 @@
 export enum AppMessages {
   DEFAULT_ERROR = "An unexpected error occured, please try again later",
   SESSION_EXPIRED = "Invalid Session/Session Expired",
+  UNAUTHORIZED = "Unauthorized Access",
   USER_ALREADY_EXISTS = "User already exists with this contact number/email/username.",
   INVALID_CREDENTIALS = "Invalid credentials",
   ACCOUNT_INACTIVE = "Account is inactive, please contact to your HOD",

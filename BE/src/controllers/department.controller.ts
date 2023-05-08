@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { AppMessages, HttpStatus } from "../data/app.constants";
+import { AppMessages, HttpStatus, UserRoles } from "../data/app.constants";
 import { createDepartment, deleteDepartment, getDepartments, getSingleDepartment, updateDepartment } from "../services/department.service";
-import authentication from "../middleware/authentication.middleware";
+import auth from "../middleware/auth.middleware";
 import { AppError } from "../classes/app-error.class";
 
 const departmentController = Router();
@@ -27,7 +27,7 @@ departmentController.get("/", async (req: Request, res: Response) => {
   @access: Private
   @role: Any
 */
-departmentController.get("/:id", authentication, async (req: Request, res: Response) => {
+departmentController.get("/:id", async (req: Request, res: Response) => {
   try {
     const department = await getSingleDepartment(req.params.id);
     if (!department) {
@@ -39,7 +39,7 @@ departmentController.get("/:id", authentication, async (req: Request, res: Respo
   }
 });
 
-departmentController.post("/", authentication, async (req: Request, res: Response) => {
+departmentController.post("/", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
   try {
     const department = await createDepartment(req.body);
     res.status(HttpStatus.CREATED).json(department);
@@ -48,7 +48,7 @@ departmentController.post("/", authentication, async (req: Request, res: Respons
   }
 });
 
-departmentController.put("/:id", authentication, async (req: Request, res: Response) => {
+departmentController.put("/:id", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
   try {
     const response = await updateDepartment(req.params.id, req.body);
     res.status(HttpStatus.OK).json(response);
@@ -57,7 +57,7 @@ departmentController.put("/:id", authentication, async (req: Request, res: Respo
   }
 });
 
-departmentController.delete("/:id", authentication, async (req: Request, res: Response) => {
+departmentController.delete("/:id", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
   try {
     const response = await deleteDepartment(req.params.id);
     res.status(HttpStatus.OK).json(response);

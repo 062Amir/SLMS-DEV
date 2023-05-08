@@ -9,4 +9,12 @@ const compareBcryptValue = async (value: any, hashedValue: any): Promise<boolean
   return await bcrypt.compare(value, hashedValue);
 };
 
-export { bcryptValue, compareBcryptValue };
+const encodeBase64 = (value: any) => {
+  return Buffer.from(value).toString("base64");
+};
+
+const decodeBase64 = (value: any) => {
+  return Buffer.from(value, "base64").toString("ascii");
+};
+
+export { bcryptValue, compareBcryptValue, encodeBase64, decodeBase64 };
