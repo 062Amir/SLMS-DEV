@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import express, { Express } from "express";
 import { connect } from "mongoose";
 import routes from "./routes/routes";
+import cors from "cors";
 
 const app: Express = express();
 dotenv.config();
@@ -18,7 +19,7 @@ connect(process.env.DB_CONNECT || "")
   });
 
 app.use(bodyParser.json());
-// app.use("/images", express.static(path.join(__dirname, "images")));
+app.use(cors());
 app.use("/", routes);
 
 app.listen(port, () => {

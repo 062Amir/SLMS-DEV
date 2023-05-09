@@ -1,16 +1,8 @@
-import { AppDefaults, AppMessages } from "../data/app.constants";
+import { AppMessages } from "../data/app.constants";
+import { IEmailTemplateArgs } from "../interfaces/email-template.interface";
 import { IUser } from "../interfaces/user.interface";
 
-interface TemplateArgs {
-  name?: string;
-  email?: string;
-  password?: string;
-  title: string;
-  message: string;
-  btnText?: string;
-}
-
-const getTemplate = (args: TemplateArgs) => {
+const getTemplate = (args: IEmailTemplateArgs) => {
   return `<!DOCTYPE html>
     <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
         xmlns:o="urn:schemas-microsoft-com:office:office">
