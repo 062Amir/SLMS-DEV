@@ -6,6 +6,7 @@ import { createUser, getSingleUser, getUsers, updateUser } from "../services/use
 import { IUser } from "../interfaces/user.interface";
 import imageValidator from "../validators/image.validator";
 import { uploadFileOnFirebase } from "../services/upload.service";
+import { sendAccountActivationMail, sendAccountCreatedMail } from "../services/mail.service";
 
 const userController = Router();
 
@@ -41,6 +42,7 @@ userController.post("/", auth([UserRoles.ADMIN]), imageValidator, async (req: Re
       }
     }
     const user = await createUser({ ...req.body, isActive: true, profileImage: uploadedFileUrl });
+    await sendAccountCreatedMail({ ...user, password: req.body.password });
     res.status(HttpStatus.CREATED).json(user);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
@@ -67,16 +69,17 @@ userController.put("/:id", auth(), imageValidator, async (req: Request, res: Res
   }
 });
 
-userController.post("/:id/activate", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
+userController.post("/:id/activate", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
     const response = await updateUser(req.params.id, { isActive: true } as IUser, true);
+    await sendAccountActivationMail(response);
     res.status(HttpStatus.OK).json(response);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
   }
 });
 
-userController.post("/:id/deactivate", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
+userController.post("/:id/deactivate", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
     const response = await updateUser(req.params.id, { isActive: false } as IUser, true);
     res.status(HttpStatus.OK).json(response);

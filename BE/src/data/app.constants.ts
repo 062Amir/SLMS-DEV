@@ -10,12 +10,23 @@ export enum AppMessages {
   USER_NOT_EXIST = "User not exist",
   ONLY_IMAGE_ALLOWED = "Only image files are allowed!",
   INVALID_IMAGE = "Invalid image file",
+  ACCOUNT_ACTIVATION_MAIL_SUBJECT = "SLMS: Account Activated",
+  ACCOUNT_ACTIVATION_MAIL_TITLE = "Account Activated",
+  ACCOUNT_ACTIVATION_MAIL_MESSAGE = "Your account is activated by your HOD",
+  ACCOUNT_ACTIVATION_BTN_TEXT = "Let's Login Now!",
+  ACCOUNT_REGISTERED_MAIL_SUBJECT = "SLMS: Account Registered",
+  ACCOUNT_REGISTERED_MAIL_TITLE = "Account Registered",
+  ACCOUNT_REGISTERED_MAIL_MESSAGE = "You have been successfully registered at SLMS Portal. Please wait until your HOD activates your account or contact your HOD for account activation.",
+  ACCOUNT_CREATED_MAIL_SUBJECT = "SLMS: Account Created",
+  ACCOUNT_CREATED_MAIL_TITLE = "Account Created",
+  ACCOUNT_CREATED_BTN_TEXT = "Let's Login Now!",
 }
 
 export enum AppDefaults {
   FILE_SIZE_LIMIT = 1 * 1024 * 1024, // keep images size < 2 MB
   USER_PROFILE_FIELD_NAME = "profileImage",
   FIREBASE_STORAGE_FOLDER_NAME = "user-profiles",
+  EMAIL_SERVICE = "gmail",
 }
 
 export enum UserRoles {

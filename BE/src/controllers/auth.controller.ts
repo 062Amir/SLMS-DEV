@@ -5,6 +5,7 @@ import { login } from "../services/auth.service";
 import { uploadFileOnFirebase } from "../services/upload.service";
 import imageValidator from "../validators/image.validator";
 import { AppError } from "../classes/app-error.class";
+import { sendAccountRegisteredMail } from "../services/mail.service";
 
 const authController = Router();
 
@@ -19,6 +20,7 @@ authController.post("/register", imageValidator, async (req: Request, res: Respo
       }
     }
     const user = await createUser({ ...req.body, isActive: false, profileImage: uploadedFileUrl });
+    await sendAccountRegisteredMail(user);
     res.status(HttpStatus.OK).json(user);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
