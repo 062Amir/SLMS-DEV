@@ -6,48 +6,38 @@ import { ILoginCredentials, IUserCredentials } from '../interfaces/credentials.i
 import { IUser } from '../interfaces/user.interface';
 import { UtilService } from './util.service';
 import { StorageService } from './storage.service';
+import { ILoginResponse } from '../interfaces/response.interface';
 
 @Injectable()
 export class AuthService {
   get isUserLoggedIn(): boolean {
-    return this.storageSvc.getItem(LocalStorageKeys.LOGGED_IN_USER) && this.storageSvc.getItem(LocalStorageKeys.TOKEN);
+    return this.storageSvc.isExist(LocalStorageKeys.LOGGED_IN_USER) && this.storageSvc.isExist(LocalStorageKeys.TOKEN);
   }
 
-  get getLoggedInUser(): IUser | null {
+  get getLoggedInUser(): IUser {
     return this.storageSvc.getItem(LocalStorageKeys.LOGGED_IN_USER);
   }
 
   constructor(private http: HttpClient, private utilSvc: UtilService, private storageSvc: StorageService) {}
 
   async login(payload: ILoginCredentials): Promise<IUser> {
-    const users = await lastValueFrom(this.http.get<IUser[]>(apiResourses.users));
-    const userExists = users.find(
-      (user) =>
-        (user.userName === payload.userName || user.email === payload.userName || user.contactNumber === +payload.userName) &&
-        user.password === payload.password
-    );
-    if (!userExists) {
-      throw new Error(AppMessages.INVALID_CREDENTIALS);
-    }
-    this.storageSvc.setItem(LocalStorageKeys.LOGGED_IN_USER, userExists);
-    return userExists;
+    const response = await lastValueFrom(this.http.post<ILoginResponse>(apiResourses.login, payload, this.utilSvc.getHttpOptions()));
+    this.storageSvc.setItem(LocalStorageKeys.LOGGED_IN_USER, response.user);
+    this.storageSvc.setItem(LocalStorageKeys.TOKEN, response.token);
+    return response.user;
   }
 
-  async registerUser(payload: IUserCredentials): Promise<IUser> {
-    const users = await lastValueFrom(this.http.get<IUser[]>(apiResourses.users));
-    const userExists = users.find(
-      (user) => user.contactNumber === payload.contactNumber || user.email === payload.email || user.userName === payload.userName
-    );
-    if (userExists) {
-      throw new Error(AppMessages.USER_ALREADY_EXISTS);
-    }
-    const registerdUser = await lastValueFrom(this.http.post<IUser>(apiResourses.users, payload, this.utilSvc.getHttpOptions()));
-    return registerdUser;
+  async registerUser(payload: FormData): Promise<IUser> {
+    return await lastValueFrom(this.http.post<IUser>(apiResourses.register, payload));
   }
 
   logout() {
+    this.clearUserData();
+    return true;
+  }
+
+  clearUserData() {
     this.storageSvc.removeItem(LocalStorageKeys.LOGGED_IN_USER);
     this.storageSvc.removeItem(LocalStorageKeys.TOKEN);
-    return true;
   }
 }

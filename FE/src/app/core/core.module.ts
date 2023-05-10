@@ -5,8 +5,10 @@ import { LeaveService } from './services/leave.service';
 import { SidebarService } from './services/sidebar.service';
 import { StaffService } from './services/staff.service';
 import { UtilService } from './services/util.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StorageService } from './services/storage.service';
+import { DepartmentService } from './services/department.service';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 export const getDocumentRef = () => (typeof document !== 'undefined' ? document : null);
 
@@ -24,8 +26,10 @@ export const getWindowRef = () => (typeof window !== 'undefined' ? window : null
       provide: 'WINDOW',
       useFactory: getWindowRef,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     AuthService,
     StorageService,
+    DepartmentService,
     LeaveService,
     SidebarService,
     StaffService,

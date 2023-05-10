@@ -59,12 +59,13 @@
     </div>
     <div class="col-md-6 col-12 mb-2">
       <div class="form-group">
-        <label for="department" class="form-label">Department *</label>
-        <select class="form-select" id="department" formControlName="department">
+        <label for="departmentId" class="form-label">Department *</label>
+        <select class="form-select" id="departmentId" formControlName="departmentId">
           <option value="">Select</option>
-          <option *ngFor="let option of departmantOptions" [value]="option">{{option}}</option>
+          <option *ngFor="let option of departmentOptions" [value]="option._id">{{option.name}}</option>
         </select>
-        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('department', addUserForm, 'required')">This
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('departmentId', addUserForm, 'required')">This
           field is required</small>
       </div>
     </div>

@@ -1,0 +1,50 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <a routerLink="/" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
+          <h1 class="showcase-title h2">My Profile</h1>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <div class="card" *ngIf="loggedInUser">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 mb-2">
+              <app-user-img [imagePath]="loggedInUser.profileImage" [imgSize]="100"></app-user-img>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Name:</label>
+              <p>{{loggedInUser.name || ''}}</p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Email:</label>
+              <p>
+                {{loggedInUser.email || ''}}
+              </p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Username:</label>
+              <p>{{loggedInUser.userName || ''}}</p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Contact Number:</label>
+              <p>{{loggedInUser.contactNumber || ''}}
+              </p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Department:</label>
+              <p>{{loggedInUser.department.name || ''}}</p>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+              <label class="details-label">Added On:</label>
+              <p>{{loggedInUser.createdAt | date : 'mediumDate'}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,9 +1,11 @@
+import { Request } from "express";
 import { AppError } from "../classes/app-error.class";
 import { AppMessages, HttpStatus, ValidationKeys } from "../data/app.constants";
 import { ILoginCredentials } from "../interfaces/login-credentials.interface";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
 import validate from "../validators/validation";
+import { getSingleDepartment } from "./department.service";
 import { compareBcryptValue, encodeBase64 } from "./util.service";
 import * as jwt from "jsonwebtoken";
 
@@ -32,12 +34,16 @@ const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.ACCOUNT_INACTIVE);
   }
 
-  user = { ...user.toJSON(), password: "" };
+  user = { ...user.toJSON(), password: "", department: await getSingleDepartment(user.departmentId) };
   const encryptedUser = encodeBase64(encodeBase64(user));
 
   // Creating token
   const token = jwt.sign({ user: encryptedUser }, process.env.TOKEN_SECRET_KEY || "", { expiresIn: "1d" });
   return { token, user };
+};
+
+const logout = (req: Request) => {
+  // TODO: Need to implement logout
 };
 
 export { login };

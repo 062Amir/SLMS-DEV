@@ -55,7 +55,7 @@ export class StaffDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loggedInUser = this.authSvc.getLoggedInUser as IUser;
+    this.loggedInUser = this.authSvc.getLoggedInUser;
     this.leaveData = {
       total: 0,
       data: [],

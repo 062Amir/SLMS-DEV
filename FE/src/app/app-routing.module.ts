@@ -15,11 +15,11 @@ const routes: Routes = [
     canActivate: [PreAuthGuard],
     loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginModule),
   },
-  // {
-  //   path: 'register',
-  //   canActivate: [PreAuthGuard],
-  //   loadChildren: () => import('./pages/register/register.module').then((m) => m.RegisterModule),
-  // },
+  {
+    path: 'register',
+    canActivate: [PreAuthGuard],
+    loadChildren: () => import('./pages/register/register.module').then((m) => m.RegisterModule),
+  },
   {
     path: 'dashboard',
     canActivate: [PostAuthGuard],
@@ -44,14 +44,14 @@ const routes: Routes = [
   //   },
   //   loadChildren: () => import('./pages/staff/staff.module').then((m) => m.StaffModule),
   // },
-  // {
-  //   path: 'profile',
-  //   canActivate: [PostAuthGuard],
-  //   data: {
-  //     roles: [UserRoles.HOD, UserRoles.STAFF],
-  //   },
-  //   loadChildren: () => import('./pages/my-profile/my-profile.module').then((m) => m.MyProfileModule),
-  // },
+  {
+    path: 'profile',
+    canActivate: [PostAuthGuard],
+    data: {
+      roles: [UserRoles.ADMIN, UserRoles.HOD, UserRoles.STAFF],
+    },
+    loadChildren: () => import('./pages/my-profile/my-profile.module').then((m) => m.MyProfileModule),
+  },
 ];
 
 @NgModule({

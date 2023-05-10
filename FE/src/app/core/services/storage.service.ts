@@ -21,4 +21,8 @@ export class StorageService {
     localStorage.removeItem(key);
     return true;
   }
+
+  isExist(key: string): boolean {
+    return localStorage.getItem(key) ? true : false;
+  }
 }

@@ -58,7 +58,7 @@ export class HodDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loggedInUser = this.authSvc.getLoggedInUser as IUser;
+    this.loggedInUser = this.authSvc.getLoggedInUser;
     this.staffData = {
       total: 0,
       data: [],

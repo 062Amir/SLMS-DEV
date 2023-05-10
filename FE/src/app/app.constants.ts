@@ -5,6 +5,9 @@ function createUrl(actionName: string): string {
 }
 
 export const apiResourses = {
+  login: createUrl('/auth/login'),
+  register: createUrl('/auth/register'),
+  department: createUrl('/departments'),
   users: createUrl('/Users'),
   leaves: createUrl('/Leaves'),
 };
@@ -22,11 +25,11 @@ export enum AppDefaults {
 
 export enum LocalStorageKeys {
   LOGGED_IN_USER = '_slms_loggedin_user',
-  TOKEN = '_slms_loggedin_user',
+  TOKEN = '_slms_token',
 }
 
 export enum UserRoles {
-  ADMIN = 'Admin',
+  ADMIN = 'ADMIN',
   HOD = 'HOD',
   STAFF = 'STAFF',
 }

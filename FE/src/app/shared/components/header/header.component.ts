@@ -14,7 +14,7 @@ export class HeaderComponent implements OnInit {
   constructor(private authSvc: AuthService, private router: Router, private sidebarSvc: SidebarService) {}
 
   ngOnInit(): void {
-    this.loggedInUser = this.authSvc.getLoggedInUser as IUser;
+    this.loggedInUser = this.authSvc.getLoggedInUser;
   }
 
   openSidebar(event: Event) {

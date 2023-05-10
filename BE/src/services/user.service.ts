@@ -3,14 +3,18 @@ import { AppMessages, HttpStatus, ValidationKeys } from "../data/app.constants";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
 import validate from "../validators/validation";
+import { getSingleDepartment } from "./department.service";
 import { bcryptValue } from "./util.service";
 
 const getUsers = async (): Promise<IUser[]> => {
   const users = await User.find();
-  return users.map((user) => {
-    user.password = "";
-    return user;
-  });
+  return await Promise.all(
+    users.map(async (user) => {
+      user.password = "";
+      user.department = await getSingleDepartment(user.departmentId);
+      return user;
+    })
+  );
 };
 
 const createUser = async (reqBody: IUser): Promise<IUser> => {
@@ -44,12 +48,14 @@ const createUser = async (reqBody: IUser): Promise<IUser> => {
     isActive: reqBody.isActive || false,
   });
   const savedUser = await user.save();
-  return { ...savedUser.toJSON(), password: "" };
+  return { ...savedUser.toJSON(), password: "", department: await getSingleDepartment(savedUser.departmentId) };
 };
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const user = await User.findOne({ _id: id });
-  user ? (user.password = "") : null;
+  if (user) {
+    user.department = await getSingleDepartment(user.departmentId);
+  }
   return user;
 };
 
@@ -67,8 +73,10 @@ const updateUser = async (id: string, reqBody: IUser, updateStatus?: boolean): P
 
   // TODO: Need to check updated object values
   const updatedUser = await User.findByIdAndUpdate(id, reqBody);
-  updatedUser ? (updatedUser.password = "") : null;
-  return user;
+  if (updatedUser) {
+    updatedUser.department = await getSingleDepartment(user.departmentId);
+  }
+  return updatedUser;
 };
 
 export { createUser, getUsers, getSingleUser, updateUser };

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { IUser } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +13,9 @@ export class PostAuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const loggedInUser = this.authSvc.getLoggedInUser;
     const roles: string[] = route.data['roles'] || '';
-    if (loggedInUser) {
+    if (this.authSvc.isUserLoggedIn) {
+      const loggedInUser = this.authSvc.getLoggedInUser;
       if (roles.includes(loggedInUser.role)) {
         return true;
       }

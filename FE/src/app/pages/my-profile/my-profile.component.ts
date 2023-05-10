@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { UserRoles } from 'src/app/app.constants';
 import { IUser } from 'src/app/core/interfaces/user.interface';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+  selector: 'app-my-profile',
+  templateUrl: './my-profile.component.html',
+  styleUrls: ['./my-profile.component.css'],
 })
-export class DashboardComponent implements OnInit {
+export class MyProfileComponent implements OnInit {
   loggedInUser: IUser;
-
-  get isUserHod(): boolean {
-    return this.loggedInUser.role === UserRoles.HOD;
-  }
 
   constructor(private authSvc: AuthService) {}
 
