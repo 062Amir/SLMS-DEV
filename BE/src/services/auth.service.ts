@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { AppError } from "../classes/app-error.class";
-import { AppMessages, HttpStatus, ValidationKeys } from "../data/app.constants";
+import { AppMessages, HttpStatus, UserStatus, ValidationKeys } from "../data/app.constants";
 import { ILoginCredentials } from "../interfaces/login-credentials.interface";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
@@ -30,7 +30,7 @@ const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
   }
 
   // Checking is account active
-  if (!user.isActive) {
+  if (user.status === UserStatus.INACTIVE) {
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.ACCOUNT_INACTIVE);
   }
 

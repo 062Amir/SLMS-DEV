@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { AppMessages, HttpStatus, UserRoles } from "../data/app.constants";
+import { AppMessages, HttpStatus, UserRoles, UserStatus } from "../data/app.constants";
 import auth from "../middleware/auth.middleware";
 import { AppError } from "../classes/app-error.class";
 import { createUser, getSingleUser, getUsers, updateUser } from "../services/user.service";
@@ -10,16 +10,16 @@ import { sendAccountActivationMail, sendAccountCreatedMail } from "../services/m
 
 const userController = Router();
 
-userController.get("/", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
+userController.get("/", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
-    const users = await getUsers();
-    res.status(HttpStatus.OK).json(users);
+    const response = await getUsers(req);
+    res.status(HttpStatus.OK).json(response);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
   }
 });
 
-userController.get("/:id", auth([UserRoles.ADMIN]), async (req: Request, res: Response) => {
+userController.get("/:id", auth(), async (req: Request, res: Response) => {
   try {
     const user = await getSingleUser(req.params.id);
     if (!user) {
@@ -41,7 +41,7 @@ userController.post("/", auth([UserRoles.ADMIN]), imageValidator, async (req: Re
         throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.INVALID_IMAGE);
       }
     }
-    const user = await createUser({ ...req.body, isActive: true, profileImage: uploadedFileUrl });
+    const user = await createUser({ ...req.body, status: UserStatus.ACTIVE, profileImage: uploadedFileUrl });
     await sendAccountCreatedMail({ ...user, password: req.body.password });
     res.status(HttpStatus.CREATED).json(user);
   } catch (error: any) {
@@ -71,7 +71,7 @@ userController.put("/:id", auth(), imageValidator, async (req: Request, res: Res
 
 userController.post("/:id/activate", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
-    const response = await updateUser(req.params.id, { isActive: true } as IUser, true);
+    const response = await updateUser(req.params.id, { status: UserStatus.ACTIVE } as IUser, true);
     await sendAccountActivationMail(response);
     res.status(HttpStatus.OK).json(response);
   } catch (error: any) {
@@ -81,7 +81,7 @@ userController.post("/:id/activate", auth([UserRoles.ADMIN, UserRoles.HOD]), asy
 
 userController.post("/:id/deactivate", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
-    const response = await updateUser(req.params.id, { isActive: false } as IUser, true);
+    const response = await updateUser(req.params.id, { status: UserStatus.INACTIVE } as IUser, true);
     res.status(HttpStatus.OK).json(response);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });

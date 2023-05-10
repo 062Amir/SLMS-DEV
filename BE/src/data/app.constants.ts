@@ -22,11 +22,18 @@ export enum AppMessages {
   ACCOUNT_CREATED_BTN_TEXT = "Let's Login Now!",
 }
 
+export enum SortBy {
+  ASC = "asc",
+  DESC = "desc",
+}
+
 export enum AppDefaults {
   FILE_SIZE_LIMIT = 1 * 1024 * 1024, // keep images size < 2 MB
   USER_PROFILE_FIELD_NAME = "profileImage",
   FIREBASE_STORAGE_FOLDER_NAME = "user-profiles",
   EMAIL_SERVICE = "gmail",
+  SORT = "createdAt",
+  SORT_BY = SortBy.DESC,
 }
 
 export enum UserRoles {
@@ -46,6 +53,11 @@ export enum ValidationKeys {
   ACTIVATE_USER = "activate_user",
   LOGIN = "login",
   DEPARTMENT = "department",
+}
+
+export enum UserStatus {
+  ACTIVE = "Active",
+  INACTIVE = "Inactive",
 }
 
 export enum ImageMimeType {

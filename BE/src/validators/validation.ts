@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { UserRoles, ValidationKeys } from "../data/app.constants";
+import { UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
 
 const schemas = {
   [ValidationKeys.NEW_USER]: Joi.object({
@@ -11,7 +11,7 @@ const schemas = {
     password: Joi.string().required().min(8),
     role: Joi.string().valid(UserRoles.HOD, UserRoles.STAFF).required(),
     profileImage: Joi.any(),
-    isActive: Joi.boolean(),
+    status: Joi.string().valid(UserStatus.ACTIVE, UserStatus.INACTIVE),
   }),
   [ValidationKeys.UPDATE_USER]: Joi.object({
     name: Joi.string().required(),
@@ -21,7 +21,7 @@ const schemas = {
     profileImage: Joi.any(),
   }),
   [ValidationKeys.ACTIVATE_USER]: Joi.object({
-    isActive: Joi.boolean().valid(true, false).required(),
+    status: Joi.string().valid(UserStatus.ACTIVE, UserStatus.INACTIVE).required(),
   }),
   [ValidationKeys.LOGIN]: Joi.object({
     userName: Joi.string().required(),

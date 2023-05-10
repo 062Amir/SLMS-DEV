@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { AppMessages, HttpStatus } from "../data/app.constants";
+import { AppMessages, HttpStatus, UserStatus } from "../data/app.constants";
 import { createUser } from "../services/user.service";
 import { login } from "../services/auth.service";
 import { uploadFileOnFirebase } from "../services/upload.service";
@@ -19,7 +19,7 @@ authController.post("/register", imageValidator, async (req: Request, res: Respo
         throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.INVALID_IMAGE);
       }
     }
-    const user = await createUser({ ...req.body, isActive: false, profileImage: uploadedFileUrl });
+    const user = await createUser({ ...req.body, status: UserStatus.INACTIVE, profileImage: uploadedFileUrl });
     await sendAccountRegisteredMail(user);
     res.status(HttpStatus.OK).json(user);
   } catch (error: any) {

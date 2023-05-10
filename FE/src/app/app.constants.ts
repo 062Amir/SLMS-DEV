@@ -34,6 +34,11 @@ export enum UserRoles {
   STAFF = 'STAFF',
 }
 
+export enum UserStatus {
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
+}
+
 export const allowedImageTypes: string[] = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
 
 export enum leaveStatusTypes {

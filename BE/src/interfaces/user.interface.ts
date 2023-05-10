@@ -1,4 +1,4 @@
-import { UserRoles } from "../data/app.constants";
+import { UserRoles, UserStatus } from "../data/app.constants";
 
 export interface IUser {
   _id?: number | string;
@@ -11,7 +11,7 @@ export interface IUser {
   password: string;
   role: UserRoles.ADMIN | UserRoles.HOD | UserRoles.STAFF;
   profileImage?: string;
-  isActive?: boolean;
+  status?: `${UserStatus}`;
   createdAt: Date;
   updatedAt: Date;
 }
