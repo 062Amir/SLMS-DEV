@@ -1,0 +1,16 @@
+<div class="modal-header text-center border-bottom-0 pb-0 d-block">
+  <h2>Confirm</h2>
+</div>
+<div class="modal-body text-center pt-0">
+  <p class="mb-0">{{ msg }}</p>
+</div>
+<div class="modal-footer border-top-0">
+  <div class="row w-100">
+    <div class="col-12 col-md-6 my-1">
+      <button type="button" class="btn btn-block btn-primary" (click)="closeModal(true)">Yes</button>
+    </div>
+    <div class="col-12 col-md-6 my-1">
+      <button type="button" class="btn btn-block btn-secondary" (click)="closeModal(false)">No</button>
+    </div>
+  </div>
+</div>

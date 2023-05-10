@@ -1,0 +1,11 @@
+<div class="sidebar bg-primary" [ngClass]="sidebarSvc.isSidebarOpen ? 'show-sidebar' : 'hide-sidebar'">
+  <button class="btn btn-outline-light btn-sm toggle-btn" (click)="sidebarSvc.toggleSidebar()"><i
+      class="fa-solid fa-xmark"></i></button>
+  <app-user-img [imagePath]="loggedInUser.profileImage" [imgSize]="100"></app-user-img>
+  <ul class="mt-4">
+    <li class="nav-item" *ngFor="let item of sidebarItems"><a (click)="redirect($event, item.path)" role="button"
+        class="nav-link">{{
+        item.text
+        }}</a></li>
+  </ul>
+</div>

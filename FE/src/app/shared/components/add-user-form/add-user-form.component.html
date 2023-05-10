@@ -1,0 +1,86 @@
+<form [formGroup]="addUserForm">
+  <div class="row">
+    <div class="col-12 mb-2">
+      <div class="form-group">
+        <label for="formFile" class="form-label">Profile Image</label>
+        <input class="form-control" type="file" id="formFile" accept="image/*" formControlName="profileImage"
+          (change)="onImageChange($event)">
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('profileImage', addUserForm, 'fileType')">You
+          must upload an valid
+          image</small>
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('profileImage', addUserForm, 'fileSize')">Please upload image of size
+          less than 1MB</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-2">
+      <div class="form-group">
+        <label for="name" class="form-label">Name *</label>
+        <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('name', addUserForm, 'required')">This
+          field is required</small>
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('name', addUserForm, 'customRequired')">Please provide
+          valid name</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-2">
+      <div class="form-group">
+        <label for="username" class="form-label">Username *</label>
+        <input type="text" class="form-control" id="username" placeholder="" formControlName="userName">
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('userName', addUserForm, 'required')">This
+          field is required</small>
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('userName', addUserForm, 'customRequired')">Please provide
+          valid username</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-2">
+      <div class="form-group">
+        <label for="email" class="form-label">Email *</label>
+        <input type="email" class="form-control" id="email" placeholder="" formControlName="email">
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('email', addUserForm, 'required')">This
+          field is required</small>
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('email', addUserForm, 'email')">Please
+          provide valid email</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-2">
+      <div class="form-group">
+        <label for="contactNumber" class="form-label">Contact Number *</label>
+        <input type="number" class="form-control" id="contactNumber" placeholder="" formControlName="contactNumber">
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('contactNumber', addUserForm, 'required')">This
+          field is required</small>
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('contactNumber', addUserForm, 'contact')">Please
+          provide valid contact no.</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-2">
+      <div class="form-group">
+        <label for="department" class="form-label">Department *</label>
+        <select class="form-select" id="department" formControlName="department">
+          <option value="">Select</option>
+          <option *ngFor="let option of departmantOptions" [value]="option">{{option}}</option>
+        </select>
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('department', addUserForm, 'required')">This
+          field is required</small>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mb-2">
+      <div class="form-group">
+        <label for="password" class="form-label">Password *</label>
+        <input type="password" class="form-control" id="password" placeholder="" formControlName="password">
+        <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('password', addUserForm, 'required')">This
+          field is required</small>
+        <small class="form-text text-danger"
+          *ngIf="utilSvc.isFieldInvalid('password', addUserForm, 'minlength')">Password should be atleast 8
+          characters long</small>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-12 mt-2">
+      <button class="btn btn-primary btn-block" (click)="onSubmit()">Submit</button>
+    </div>
+  </div>
+</form>
