@@ -12,6 +12,8 @@ import { HodDashboardComponent } from './components/hod-dashboard/hod-dashboard.
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TableComponent } from './components/table/table.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { AddEditDepartmentComponent } from './components/add-edit-department/add-edit-department.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     HodDashboardComponent,
     TableComponent,
     ConfirmModalComponent,
+    AdminDashboardComponent,
+    AddEditDepartmentComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule, RouterModule, NgxSpinnerModule],
   exports: [
@@ -34,6 +38,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     HodDashboardComponent,
     TableComponent,
     ConfirmModalComponent,
+    AdminDashboardComponent,
   ],
 })
 export class SharedModule {}

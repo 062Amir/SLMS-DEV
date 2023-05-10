@@ -1,2 +1,3 @@
-<app-staff-dashboard *ngIf="!isUserHod"></app-staff-dashboard>
-<app-hod-dashboard *ngIf="isUserHod"></app-hod-dashboard>
+<app-admin-dashboard *ngIf="authSvc.getLoggedInUser.role === UserRoles.ADMIN"></app-admin-dashboard>
+<app-hod-dashboard *ngIf="authSvc.getLoggedInUser.role === UserRoles.HOD"></app-hod-dashboard>
+<app-staff-dashboard *ngIf="authSvc.getLoggedInUser.role === UserRoles.STAFF"></app-staff-dashboard>

@@ -11,15 +11,20 @@ export class SidebarService {
     {
       text: 'Dashboard',
       path: '/dashboard',
-      roles: [UserRoles.HOD, UserRoles.STAFF],
+      roles: [UserRoles.ADMIN, UserRoles.HOD, UserRoles.STAFF],
     },
     {
-      text: 'Staff Management',
+      text: 'Departments',
+      path: '/departments',
+      roles: [UserRoles.ADMIN],
+    },
+    {
+      text: 'Staff',
       path: '/staff',
       roles: [UserRoles.HOD],
     },
     {
-      text: 'Leaves Management',
+      text: 'Leaves',
       path: '/leaves',
       roles: [UserRoles.HOD, UserRoles.STAFF],
     },

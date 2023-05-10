@@ -53,7 +53,8 @@ export class AddUserFormComponent implements OnInit {
   async loadDepartment() {
     try {
       this.utilSvc.showSpinner();
-      this.departmentOptions = await this.departmentSvc.getDepartments();
+      const response = await this.departmentSvc.getDepartments();
+      this.departmentOptions = response.data;
     } catch (error) {
       this.notifySvc.error(error);
     } finally {

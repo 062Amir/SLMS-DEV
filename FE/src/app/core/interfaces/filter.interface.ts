@@ -1,9 +1,12 @@
 interface CommonFiltes {
-  _page?: number;
-  _limit?: number;
-  _sort?: string;
-  _order?: 'asc' | 'desc';
+  q?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+  sortBy?: 'asc' | 'desc';
 }
+
+export interface IDepartmentFilters extends CommonFiltes {}
 
 export interface ILeaveFilters extends CommonFiltes {
   reason_like?: string;

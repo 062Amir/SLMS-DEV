@@ -18,9 +18,15 @@ export enum AppMessages {
   INVALID_CREDENTIALS = 'Invalid credentials',
 }
 
+export enum SortBy {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
 export enum AppDefaults {
   MIN_ALLOWED_FILE_SIZE = 1000000, // 1MB
   PAGE_COUNT = 10,
+  SORT = 'createdAt',
 }
 
 export enum LocalStorageKeys {

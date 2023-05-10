@@ -1,3 +1,5 @@
+import { SortBy } from 'src/app/app.constants';
+
 export interface IListResponse {
   total: number;
   data: any[];
@@ -9,6 +11,6 @@ export interface ISortOptions {
 }
 
 export interface ISortChange {
-  sortBy: string;
-  order: 'asc' | 'desc';
+  sort: string;
+  sortBy: `${SortBy}`;
 }

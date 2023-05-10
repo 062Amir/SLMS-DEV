@@ -1,0 +1,59 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <h1 class="showcase-title h2">Departments</h1>
+        </div>
+        <div class="col-md-6 col-5 text-end">
+          <button class="btn btn-primary" (click)="addEditDepartment()"><i class="fa-solid fa-plus"></i> New
+            Department</button>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <form [formGroup]="filterForm">
+        <div class="row mb-4 ">
+          <div class="col-md-12 col-12 mb-2">
+            <div class="form-group">
+              <label for="search" class="form-label">Search</label>
+              <input type="search" class="form-control" id="search" placeholder="Name..." formControlName="search">
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- Table View Start -->
+      <div class="row pt-2">
+        <div class="col">
+          <div class="table-wrapper bg-light table-responsive">
+            <app-table [sortOptions]="sortOptions" [defaultField]="'createdAt'" (sortChange)="onSortChange($event)">
+              <tbody>
+                <tr *ngFor="let department of departmentData.data">
+                  <td>
+                    {{department.name}}
+                  </td>
+                  <td>
+                    {{department.createdAt | date : 'mediumDate'}}
+                  </td>
+                  <td>
+                    <button class="btn btn-warning btn-sm" ngbTooltip="Edit Department"
+                      (click)="addEditDepartment(department)"><i class="fa-solid fa-pencil"></i></button>
+                    <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteDepartment(department)"
+                      ngbTooltip="Delete Department"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </app-table>
+            <div class="text-center" *ngIf="!departmentData.data?.length">
+              <p class="helper-text"><span translate>No records available.</span></p>
+            </div>
+            <ngb-pagination *ngIf="departmentData.total" class="table-pagination"
+              [collectionSize]="departmentData.total" [(page)]="pageNumber" [pageSize]="pageCount" [maxSize]="3"
+              (pageChange)="onPageChange()" aria-label="Default pagination" [boundaryLinks]="true"></ngb-pagination>
+          </div>
+        </div>
+      </div>
+      <!-- Table View End -->
+    </section>
+  </div>
+</div>

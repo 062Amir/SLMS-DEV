@@ -1,0 +1,30 @@
+<div class="modal-header text-center border-bottom-0 pb-0 d-block">
+  <h2>{{modalTitle}}</h2>
+</div>
+<div class="modal-body pt-0">
+  <form [formGroup]="departmentForm">
+    <div class="row">
+      <div class="col-md-12 col-12 mb-2">
+        <div class="form-group mx-3">
+          <label for="name" class="form-label">Name *</label>
+          <input type="text" class="form-control" id="name" placeholder="" formControlName="name">
+          <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('name', departmentForm, 'required')">This
+            field is required</small>
+          <small class="form-text text-danger"
+            *ngIf="utilSvc.isFieldInvalid('name', departmentForm, 'customRequired')">Please provide
+            valid name</small>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer border-top-0">
+  <div class="row w-100">
+    <div class="col-12 col-md-6 my-1">
+      <button type="button" class="btn btn-block btn-primary" (click)="onSubmit()">Submit</button>
+    </div>
+    <div class="col-12 col-md-6 my-1">
+      <button type="button" class="btn btn-block btn-secondary" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>

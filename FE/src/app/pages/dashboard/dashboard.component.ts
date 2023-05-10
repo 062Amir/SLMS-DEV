@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { UserRoles } from 'src/app/app.constants';
-import { IUser } from 'src/app/core/interfaces/user.interface';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
@@ -9,15 +8,11 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
-  loggedInUser: IUser;
-
-  get isUserHod(): boolean {
-    return this.loggedInUser.role === UserRoles.HOD;
+  get UserRoles() {
+    return UserRoles;
   }
 
-  constructor(private authSvc: AuthService) {}
+  constructor(public authSvc: AuthService) {}
 
-  ngOnInit(): void {
-    this.loggedInUser = this.authSvc.getLoggedInUser;
-  }
+  ngOnInit(): void {}
 }

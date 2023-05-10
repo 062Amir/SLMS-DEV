@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SortBy } from 'src/app/app.constants';
 import { ISortChange, ISortOptions } from 'src/app/core/interfaces/common.interface';
 
 @Component({
@@ -9,29 +10,33 @@ import { ISortChange, ISortOptions } from 'src/app/core/interfaces/common.interf
 export class TableComponent implements OnInit {
   @Input() sortOptions: ISortOptions[];
   @Input() defaultField: string;
-  @Input() defaultOrder: 'asc' | 'desc';
+  @Input() defaultOrder: `${SortBy}`;
   @Output() sortChange: EventEmitter<ISortChange> = new EventEmitter<ISortChange>();
 
-  sortBy: any;
-  sortOrder: 'asc' | 'desc';
+  sort: any;
+  sortBy: `${SortBy}`;
+
+  get SortBy() {
+    return SortBy;
+  }
 
   constructor() {}
 
   ngOnInit(): void {
-    this.sortBy = this.defaultField || null;
-    this.sortOrder = this.defaultOrder || 'desc';
+    this.sort = this.defaultField || null;
+    this.sortBy = this.defaultOrder || SortBy.DESC;
   }
 
   onChange(field: string) {
     if (!field) {
       return;
     }
-    if (this.sortBy === field) {
-      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    if (this.sort === field) {
+      this.sortBy = this.sortBy === SortBy.ASC ? SortBy.DESC : SortBy.ASC;
     }
-    this.sortBy = field;
+    this.sort = field;
     this.sortChange.emit({
-      order: this.sortOrder,
+      sort: this.sort,
       sortBy: this.sortBy,
     });
   }

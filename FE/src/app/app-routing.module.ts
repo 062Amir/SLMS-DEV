@@ -28,6 +28,14 @@ const routes: Routes = [
     },
     loadChildren: () => import('./pages/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path: 'departments',
+    canActivate: [PostAuthGuard],
+    data: {
+      roles: [UserRoles.ADMIN],
+    },
+    loadChildren: () => import('./pages/department/department.module').then((m) => m.DepartmentModule),
+  },
   // {
   //   path: 'leaves',
   //   canActivate: [PostAuthGuard],

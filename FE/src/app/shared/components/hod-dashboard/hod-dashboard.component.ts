@@ -64,8 +64,8 @@ export class HodDashboardComponent implements OnInit {
       data: [],
     };
     this.filters = {
-      _sort: 'createdAt',
-      _order: 'desc',
+      // _sort: 'createdAt',
+      // _order: 'desc',
     };
     this.staffCount = 0;
 

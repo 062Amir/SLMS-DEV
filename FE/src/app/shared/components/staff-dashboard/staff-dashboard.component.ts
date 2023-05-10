@@ -61,8 +61,8 @@ export class StaffDashboardComponent implements OnInit {
       data: [],
     };
     this.filters = {
-      _sort: 'createdAt',
-      _order: 'desc',
+      // _sort: 'createdAt',
+      // _order: 'desc',
     };
     this.counts = { applied: 0, approved: 0, rejected: 0 };
 
