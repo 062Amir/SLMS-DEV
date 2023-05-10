@@ -1,45 +1,22 @@
 import { Request } from "express";
 import { AppError } from "../classes/app-error.class";
-import { AppMessages, HttpStatus, UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
+import { AppMessages, HttpStatus, QueryBuilderKeys, UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
 import validate from "../validators/validation";
 import { getSingleDepartment } from "./department.service";
-import { bcryptValue, getQuery } from "./util.service";
+import { bcryptValue, buildQuery } from "./util.service";
 import { IListResponse } from "../interfaces/response.interface";
 
 const getUsers = async (req: Request): Promise<IListResponse> => {
-  const query = getQuery(req.query);
-  const searchQuery: any = {
-    $and: [
-      {
-        $or: [
-          { name: { $regex: query.search, $options: "i" } },
-          { email: { $regex: query.search, $options: "i" } },
-          { userName: { $regex: query.search, $options: "i" } },
-          { contactNumber: { $regex: query.search, $options: "i" } },
-        ],
-      },
-    ],
-  };
-  if (req.query.departmentId) {
-    searchQuery.$and.push({ departmentId: { $eq: req.query.departmentId } });
-  }
-  if (req.query.status) {
-    searchQuery.$and.push({ status: { $eq: req.query.status } });
-  }
-  if (req.user.role === UserRoles.ADMIN) {
-    searchQuery.$and.push({ role: { $eq: UserRoles.HOD } });
-  }
-  if (req.user.role === UserRoles.HOD) {
-    searchQuery.$and.push({ role: { $eq: UserRoles.STAFF } });
-  }
-  let users = await User.find(searchQuery)
-    .sort([[query.sort, query.sortBy]])
-    .skip(query.page * query.limit)
-    .limit(query.limit);
+  const { query, queryParams } = buildQuery(QueryBuilderKeys.USER_LIST, req);
 
-  const total = await User.countDocuments(searchQuery);
+  let users = await User.find(query)
+    .sort([[queryParams.sort, queryParams.sortBy]])
+    .skip(queryParams.page * queryParams.limit)
+    .limit(queryParams.limit);
+
+  const total = await User.countDocuments(query);
 
   users = await Promise.all(
     users.map(async (user) => {

@@ -60,6 +60,11 @@ export enum UserStatus {
   INACTIVE = "Inactive",
 }
 
+export enum QueryBuilderKeys {
+  USER_LIST = "user_list",
+  DEPARTMENT_LIST = "department_list",
+}
+
 export enum ImageMimeType {
   "image/png" = "png",
   "image/jpeg" = "jpg",
