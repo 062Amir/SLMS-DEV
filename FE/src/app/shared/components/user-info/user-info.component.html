@@ -1,0 +1,41 @@
+<div class="card" *ngIf="user">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-8 col-md-6 col-12 mb-2">
+        <app-user-img [imagePath]="user.profileImage" [imgSize]="100"></app-user-img>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Status:</label>
+        <p><span class="badge" [ngClass]="utilSvc.getUserStatus(user)">{{
+            user.status }}</span></p>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Name:</label>
+        <p>{{user.name || '-'}}</p>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Email:</label>
+        <p>
+          {{user.email || '-'}}
+        </p>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Username:</label>
+        <p>{{user.userName || '-'}}</p>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Contact Number:</label>
+        <p>{{user.contactNumber || '-'}}
+        </p>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Department:</label>
+        <p>{{user.department?.name ? user.department.name : '-'}}</p>
+      </div>
+      <div class="col-lg-4 col-md-6 col-12">
+        <label class="details-label">Added On:</label>
+        <p>{{user.createdAt | date : 'mediumDate'}}</p>
+      </div>
+    </div>
+  </div>
+</div>

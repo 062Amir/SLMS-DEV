@@ -1,0 +1,97 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <h1 class="showcase-title h2">Hod's</h1>
+        </div>
+        <div class="col-md-6 col-6 text-end">
+          <a [routerLink]="getUrl('add')" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New User</a>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <form [formGroup]="filterForm">
+        <div class="row mb-4 ">
+          <div class="col-md-4 col-12 mb-2">
+            <div class="form-group">
+              <label for="search" class="form-label">Search</label>
+              <input type="search" class="form-control" id="search" placeholder="Name/Email/Contact/Username...."
+                formControlName="search">
+            </div>
+          </div>
+          <div class="col-md-4 col-12 mb-2">
+            <div class="form-group">
+              <label for="department" class="form-label">Department</label>
+              <select class="form-select" id="department" formControlName="department">
+                <option value="">All</option>
+                <option *ngFor="let option of departmentData.data" [value]="option._id">{{option.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4 col-12 mb-2">
+            <div class="form-group">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" formControlName="status">
+                <option value="">All</option>
+                <option *ngFor="let option of userStatusOptions" [value]="option">{{option}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- Table View Start -->
+      <div class="row pt-2">
+        <div class="col">
+          <div class="table-wrapper bg-light table-responsive">
+            <app-table [sortOptions]="sortOptions" [defaultField]="'createdAt'" (sortChange)="onSortChange($event)">
+              <tbody>
+                <tr *ngFor="let user of userData.data">
+                  <td>
+                    <app-user-img [imagePath]="user.profileImage" [imgSize]="40"></app-user-img>
+                  </td>
+                  <td>
+                    {{ user.name || "" }}
+                  </td>
+                  <td>
+                    <a class="text-dark" href="mailto:{{user.email || ''}}">{{user.email || ''}}</a>
+                  </td>
+                  <td><a class="text-dark" href="tel:{{user.contactNumber || ''}}">{{user.contactNumber || ''}}</a>
+                  </td>
+                  <td>{{ user.department.name || "" }}</td>
+                  <td><span class="badge" [ngClass]="utilSvc.getUserStatus(user)">{{
+                      user.status }}</span>
+                  </td>
+                  <td>
+                    {{user.createdAt | date : 'mediumDate'}}
+                  </td>
+                  <td>
+                    <div class="action-btn">
+                      <a class="btn btn-outline-secondary btn-sm" [routerLink]="getUrl('details', user)"
+                        ngbTooltip="User Details"><i class="fa-solid fa-eye"></i></a>
+                      <button class="btn btn-success btn-sm ms-2" *ngIf="user.status === UserStatus.INACTIVE"
+                        (click)="updateUserStatus(user, UserStatus.ACTIVE)" ngbTooltip="Activate User"><i
+                          class="fa-solid fa-user-check"></i></button>
+                      <button class="btn btn-outline-danger btn-sm ms-2" *ngIf="user.status === UserStatus.ACTIVE"
+                        (click)="updateUserStatus(user, UserStatus.INACTIVE)" ngbTooltip="Deactivate User"><i
+                          class="fa-solid fa-user-xmark"></i></button>
+                      <button class="btn btn-outline-danger btn-sm ms-2" (click)="deleteUser(user)"
+                        ngbTooltip="Delete User"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </app-table>
+            <div class="text-center" *ngIf="!userData.data?.length">
+              <p class="helper-text"><span translate>No records available.</span></p>
+            </div>
+            <ngb-pagination *ngIf="userData.total" class="table-pagination" [collectionSize]="userData.total"
+              [(page)]="pageNumber" [pageSize]="pageCount" [maxSize]="3" (pageChange)="onPageChange()"
+              aria-label="Default pagination" [boundaryLinks]="true"></ngb-pagination>
+          </div>
+        </div>
+      </div>
+      <!-- Table View End -->
+    </section>
+  </div>
+</div>

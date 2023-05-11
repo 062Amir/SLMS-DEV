@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 import { LeaveService } from './services/leave.service';
 import { SidebarService } from './services/sidebar.service';
-import { StaffService } from './services/staff.service';
+import { UserService } from './services/user.service';
 import { UtilService } from './services/util.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { StorageService } from './services/storage.service';
@@ -32,7 +32,7 @@ export const getWindowRef = () => (typeof window !== 'undefined' ? window : null
     DepartmentService,
     LeaveService,
     SidebarService,
-    StaffService,
+    UserService,
     UtilService,
   ],
 })

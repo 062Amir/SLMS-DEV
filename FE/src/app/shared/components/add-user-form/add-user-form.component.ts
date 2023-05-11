@@ -37,13 +37,13 @@ export class AddUserFormComponent implements OnInit {
       userName: ['', [Validators.required, AppValidators.customRequired]],
       email: ['', [Validators.required, AppValidators.email]],
       contactNumber: ['', [Validators.required, AppValidators.contact]],
-      departmentId: [this.defaultDepartment || '', [Validators.required]],
+      department: [this.defaultDepartment || '', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
     this.departmentOptions = [];
 
     if (this.disableDepartment) {
-      this.addUserForm.controls['departmentId'].disable();
+      this.addUserForm.controls['department'].disable();
     }
     if (!this.isUpdateForm) {
       this.loadDepartment();
@@ -80,7 +80,7 @@ export class AddUserFormComponent implements OnInit {
     formData.append('contactNumber', userData.contactNumber || '');
     formData.append('role', this.userRole);
     formData.append('password', userData.password || '');
-    formData.append('departmentId', userData.departmentId || '');
+    formData.append('department', userData.department || '');
     if (userData.profileImage) {
       formData.append('profileImage', userData.profileImage || '');
     }

@@ -8,7 +8,7 @@ export const apiResourses = {
   login: createUrl('/auth/login'),
   register: createUrl('/auth/register'),
   department: createUrl('/departments'),
-  users: createUrl('/Users'),
+  user: createUrl('/users'),
   leaves: createUrl('/Leaves'),
 };
 

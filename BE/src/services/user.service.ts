@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { AppError } from "../classes/app-error.class";
-import { AppMessages, HttpStatus, QueryBuilderKeys, UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
+import { AppMessages, HttpStatus, PopulateKeys, QueryBuilderKeys, UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
 import validate from "../validators/validation";
@@ -12,19 +12,12 @@ const getUsers = async (req: Request): Promise<IListResponse> => {
   const { query, queryParams } = buildQuery(QueryBuilderKeys.USER_LIST, req);
 
   let users = await User.find(query)
+    .populate(PopulateKeys.DEPARTMENT)
     .sort([[queryParams.sort, queryParams.sortBy]])
     .skip(queryParams.page * queryParams.limit)
     .limit(queryParams.limit);
 
   const total = await User.countDocuments(query);
-
-  users = await Promise.all(
-    users.map(async (user) => {
-      user.password = "";
-      user.department = await getSingleDepartment(user.departmentId);
-      return user;
-    })
-  );
 
   return {
     data: users,
@@ -56,22 +49,18 @@ const createUser = async (reqBody: IUser): Promise<IUser> => {
     userName: reqBody.userName || "",
     email: reqBody.email || "",
     contactNumber: reqBody.contactNumber || "",
-    departmentId: reqBody.departmentId || "",
+    department: reqBody.department || "",
     password: hashedPassword || "",
     role: reqBody.role || "",
     profileImage: reqBody.profileImage || null,
     status: reqBody.status || UserStatus.INACTIVE,
   });
   const savedUser = await user.save();
-  return { ...savedUser.toJSON(), password: "", department: await getSingleDepartment(savedUser.departmentId) };
+  return { ...savedUser.toJSON(), password: "", department: await getSingleDepartment(savedUser.department as string) };
 };
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
-  const user = await User.findOne({ _id: id });
-  if (user) {
-    user.department = await getSingleDepartment(user.departmentId);
-  }
-  return user;
+  return await User.findOne({ _id: id }).populate(PopulateKeys.DEPARTMENT);
 };
 
 const updateUser = async (id: string, reqBody: IUser, updateStatus?: boolean): Promise<any> => {
@@ -87,11 +76,17 @@ const updateUser = async (id: string, reqBody: IUser, updateStatus?: boolean): P
   }
 
   // TODO: Need to check updated object values
-  const updatedUser = await User.findByIdAndUpdate(id, reqBody);
-  if (updatedUser) {
-    updatedUser.department = await getSingleDepartment(user.departmentId);
-  }
-  return updatedUser;
+  return await User.findByIdAndUpdate(id, reqBody).populate(PopulateKeys.DEPARTMENT);
 };
 
-export { createUser, getUsers, getSingleUser, updateUser };
+const deleteUser = async (id: string): Promise<any> => {
+  const department = await getSingleUser(id);
+  if (!department) {
+    throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.USER_NOT_EXIST);
+  }
+
+  await User.deleteOne({ _id: id });
+  return { _id: id };
+};
+
+export { createUser, getUsers, getSingleUser, updateUser, deleteUser };

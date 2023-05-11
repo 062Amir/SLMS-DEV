@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NgbDateStruct, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { leaveStatusTypes } from 'src/app/app.constants';
+import { UserStatus, leaveStatusTypes } from 'src/app/app.constants';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 import { v4 as uuid } from 'uuid';
 import { IListResponse } from '../interfaces/common.interface';
 import { ILeave } from '../interfaces/leave.interface';
+import { IUser } from '../interfaces/user.interface';
 
 @Injectable()
 export class UtilService {
@@ -89,6 +90,17 @@ export class UtilService {
       case leaveStatusTypes.REJECTED:
         return 'bg-danger';
       case leaveStatusTypes.APPROVED:
+        return 'bg-success';
+      default:
+        return 'bg-secondary';
+    }
+  }
+
+  getUserStatus(user: IUser): string {
+    switch (user.status) {
+      case UserStatus.INACTIVE:
+        return 'bg-danger';
+      case UserStatus.ACTIVE:
         return 'bg-success';
       default:
         return 'bg-secondary';

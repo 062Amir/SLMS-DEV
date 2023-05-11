@@ -135,7 +135,7 @@ export class DepartmentListComponent implements OnInit, AfterViewInit, OnDestroy
     modalRef.componentInstance.department = department;
     const response = (await modalRef.result) || false;
     if (response) {
-      this.loadDepartments();
+      await this.loadDepartments();
     }
   }
 
@@ -146,7 +146,7 @@ export class DepartmentListComponent implements OnInit, AfterViewInit, OnDestroy
         this.utilSvc.showSpinner();
         await this.departmentSvc.deleteDepartment(department._id);
         this.notifySvc.success('Department deleted successfully.');
-        this.loadDepartments();
+        await this.loadDepartments();
       }
     } catch (error) {
       this.notifySvc.error(error);

@@ -44,14 +44,14 @@ const routes: Routes = [
   //   },
   //   loadChildren: () => import('./pages/leave/leave.module').then((m) => m.LeaveModule),
   // },
-  // {
-  //   path: 'staff',
-  //   canActivate: [PostAuthGuard],
-  //   data: {
-  //     roles: [UserRoles.HOD],
-  //   },
-  //   loadChildren: () => import('./pages/staff/staff.module').then((m) => m.StaffModule),
-  // },
+  {
+    path: 'hods',
+    canActivate: [PostAuthGuard],
+    data: {
+      roles: [UserRoles.ADMIN],
+    },
+    loadChildren: () => import('./pages/user/user.module').then((m) => m.UserModule),
+  },
   {
     path: 'profile',
     canActivate: [PostAuthGuard],

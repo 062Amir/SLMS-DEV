@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { AppError } from "../classes/app-error.class";
-import { AppMessages, HttpStatus, UserStatus, ValidationKeys } from "../data/app.constants";
+import { AppMessages, HttpStatus, PopulateKeys, UserStatus, ValidationKeys } from "../data/app.constants";
 import { ILoginCredentials } from "../interfaces/login-credentials.interface";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
@@ -24,7 +24,7 @@ const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
   // Checking is user already exist
   let user: any = await User.findOne({
     $or: [{ email: reqBody.userName }, { userName: reqBody.userName }, { contactNumber: reqBody.userName }],
-  });
+  }).populate(PopulateKeys.DEPARTMENT);
   if (!user || !(await compareBcryptValue(reqBody.password, user.password))) {
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.INVALID_CREDENTIALS);
   }
@@ -34,7 +34,7 @@ const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.ACCOUNT_INACTIVE);
   }
 
-  user = { ...user.toJSON(), password: "", department: await getSingleDepartment(user.departmentId) };
+  user = { ...user.toJSON(), password: "" };
   const encryptedUser = encodeBase64(encodeBase64(user));
 
   // Creating token

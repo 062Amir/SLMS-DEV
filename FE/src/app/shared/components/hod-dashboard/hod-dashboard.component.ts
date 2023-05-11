@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UserRoles } from 'src/app/app.constants';
 import { ISortOptions } from 'src/app/core/interfaces/common.interface';
-import { IStaffFilters } from 'src/app/core/interfaces/filter.interface';
+import { IUserFilters } from 'src/app/core/interfaces/filter.interface';
 import { IUser } from 'src/app/core/interfaces/user.interface';
 import { AppNotificationService } from 'src/app/core/services/app-notification.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { StaffService } from 'src/app/core/services/staff.service';
 import { UtilService } from 'src/app/core/services/util.service';
 
 @Component({
@@ -16,7 +15,7 @@ import { UtilService } from 'src/app/core/services/util.service';
 export class HodDashboardComponent implements OnInit {
   loggedInUser: IUser;
   staffData: { total: number; data: IUser[] };
-  filters: IStaffFilters;
+  filters: IUserFilters;
   staffCount: number;
 
   sortOptions: ISortOptions[] = [
@@ -53,9 +52,9 @@ export class HodDashboardComponent implements OnInit {
   constructor(
     private authSvc: AuthService,
     public utilSvc: UtilService,
-    private notifySvc: AppNotificationService,
-    private staffSvc: StaffService
-  ) {}
+    private notifySvc: AppNotificationService
+  ) // private staffSvc: StaffService
+  {}
 
   ngOnInit(): void {
     this.loggedInUser = this.authSvc.getLoggedInUser;

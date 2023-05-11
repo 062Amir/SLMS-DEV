@@ -1,0 +1,23 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <a routerLink="/hods" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
+          <h1 class="showcase-title h2">Hod Details</h1>
+        </div>
+        <div class="col-md-6 col-5 text-end" *ngIf="userInfo">
+          <button class="btn btn-success ms-2 my-1" *ngIf="userInfo.status === UserStatus.INACTIVE"
+            (click)="updateUserStatus(UserStatus.ACTIVE)"><i class="fa-solid fa-user-check"></i> Activate</button>
+          <button class="btn btn-outline-danger ms-2 my-1" *ngIf="userInfo.status === UserStatus.ACTIVE"
+            (click)="updateUserStatus(UserStatus.INACTIVE)"><i class="fa-solid fa-user-xmark"></i> Deactivate</button>
+          <button class="btn btn-danger ms-2 my-1" (click)="deleteUser()"><i class="fa-solid fa-trash-can"></i>
+            Delete</button>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4" *ngIf="userInfo">
+      <app-user-info [user]="userInfo"></app-user-info>
+    </section>
+  </div>
+</div>

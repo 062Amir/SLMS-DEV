@@ -14,6 +14,7 @@ import { TableComponent } from './components/table/table.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AddEditDepartmentComponent } from './components/add-edit-department/add-edit-department.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AddEditDepartmentComponent } from './components/add-edit-department/add
     ConfirmModalComponent,
     AdminDashboardComponent,
     AddEditDepartmentComponent,
+    UserInfoComponent,
   ],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, NgbModule, RouterModule, NgxSpinnerModule],
   exports: [
@@ -39,6 +41,7 @@ import { AddEditDepartmentComponent } from './components/add-edit-department/add
     TableComponent,
     ConfirmModalComponent,
     AdminDashboardComponent,
+    UserInfoComponent,
   ],
 })
 export class SharedModule {}

@@ -1,1 +1,113 @@
-<h1>admin-dashboard works!</h1>
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <!-- Greeting View Start -->
+        <div class="col">
+          <h1 class="showcase-title"><span>Hello</span> {{authSvc.getLoggedInUser?.name || ""}},</h1>
+          <p>Welcome to the LSMS system.</p>
+        </div>
+        <!-- Greeting View End -->
+      </div>
+    </section>
+    <section class="page-content">
+      <div class="row">
+        <!-- Cards View Start -->
+        <div class="col-12 col-md-6 col-lg-4 my-2">
+          <div class="card bg-blue text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'total-hods-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
+            </ngx-spinner>
+            <div class="card-body">
+              <h1 class="card-title showcase-title">{{counts.totalHods}}</h1>
+              <h5 class="card-label h5">Total Hod's</h5>
+            </div>
+          </div>
+        </div>
+        <!-- Cards View End -->
+        <!-- Cards View Start -->
+        <div class="col-12 col-md-6 col-lg-4 my-2">
+          <div class="card bg-success text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'active-hods-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
+            </ngx-spinner>
+            <div class="card-body">
+              <h1 class="card-title showcase-title">{{counts.activeHods}}</h1>
+              <h5 class="card-label h5">Active Hod's</h5>
+            </div>
+          </div>
+        </div>
+        <!-- Cards View End -->
+        <!-- Cards View Start -->
+        <div class="col-12 col-md-6 col-lg-4 my-2">
+          <div class="card bg-danger text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'inactive-hods-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
+            </ngx-spinner>
+            <div class="card-body">
+              <h1 class="card-title showcase-title">{{counts.inactiveHods}}</h1>
+              <h5 class="card-label h5">Inactive Hod's</h5>
+            </div>
+          </div>
+        </div>
+        <!-- Cards View End -->
+      </div>
+
+      <!-- Table View Start -->
+      <div class="row pt-5 align-items-center">
+        <div class="col-12 col-md-8">
+          <h2>Recent Added Hod's</h2>
+        </div>
+        <div class="col-12 col-md-4 text-end">
+          <a [routerLink]="['/hods']" class="btn btn-primary">View All Hod's</a>
+        </div>
+      </div>
+      <div class="row pt-2">
+        <div class="col">
+          <div class="card">
+            <div class="card-body bg-grey-light px-0 py-1">
+              <div class="table-wrapper bg-light table-responsive">
+                <ngx-spinner [name]="'hods-spinner'" [fullScreen]="false" size="default"
+                  type="ball-clip-rotate-multiple"> </ngx-spinner>
+                <app-table [sortOptions]="sortOptions" [defaultField]="'createdAt'">
+                  <tbody>
+                    <tr *ngFor="let user of userData.data">
+                      <td>
+                        <app-user-img [imagePath]="user.profileImage" [imgSize]="40"></app-user-img>
+                      </td>
+                      <td>
+                        {{ user.name || "" }}
+                      </td>
+                      <td>
+                        <a class="text-dark" href="mailto:{{user.email || ''}}">{{user.email || ''}}</a>
+                      </td>
+                      <td><a class="text-dark" href="tel:{{user.contactNumber || ''}}">{{user.contactNumber || ''}}</a>
+                      </td>
+
+                      <td>{{ user.department.name || "" }}</td>
+                      <td><span class="badge" [ngClass]="utilSvc.getUserStatus(user)">{{
+                          user.status }}</span>
+                      </td>
+                      <td>
+                        {{user.createdAt | date : 'mediumDate'}}
+                      </td>
+                      <td>
+                        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/hods', user._id]"
+                          ngbTooltip="View Details"><i class="fa-solid fa-eye"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </app-table>
+                <div class="text-center" *ngIf="!userData.data?.length">
+                  <p class="helper-text"><span translate>No records available.</span></p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Table View End -->
+    </section>
+  </div>
+</div>

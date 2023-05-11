@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import { AppMessages, HttpStatus, UserRoles, UserStatus } from "../data/app.constants";
 import auth from "../middleware/auth.middleware";
 import { AppError } from "../classes/app-error.class";
-import { createUser, getSingleUser, getUsers, updateUser } from "../services/user.service";
+import { createUser, deleteUser, getSingleUser, getUsers, updateUser } from "../services/user.service";
 import { IUser } from "../interfaces/user.interface";
 import imageValidator from "../validators/image.validator";
 import { uploadFileOnFirebase } from "../services/upload.service";
@@ -25,6 +25,15 @@ userController.get("/:id", auth(), async (req: Request, res: Response) => {
     if (!user) {
       throw new AppError(HttpStatus.NOT_FOUND, AppMessages.USER_NOT_EXIST);
     }
+    res.status(HttpStatus.OK).json(user);
+  } catch (error: any) {
+    res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
+  }
+});
+
+userController.delete("/:id", auth(), async (req: Request, res: Response) => {
+  try {
+    const user = await deleteUser(req.params.id);
     res.status(HttpStatus.OK).json(user);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });

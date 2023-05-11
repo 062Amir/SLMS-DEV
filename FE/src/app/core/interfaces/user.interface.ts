@@ -1,11 +1,17 @@
-import { UserStatus } from 'src/app/app.constants';
-import { IUserCredentials } from './credentials.interface';
+import { UserRoles, UserStatus } from 'src/app/app.constants';
 import { IDepartment } from './department.interface';
 
-export interface IUser extends IUserCredentials {
+export interface IUser {
   _id: string;
-  department: IDepartment;
+  name: string;
+  userName: string;
+  email: string;
+  contactNumber: number | string;
+  role: `${UserRoles}`;
+  password: string;
+  profileImage?: string;
   status: `${UserStatus}`;
+  department: IDepartment;
   createdAt: string;
   updatedAt: string;
 }

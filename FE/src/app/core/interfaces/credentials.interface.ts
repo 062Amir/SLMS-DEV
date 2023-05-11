@@ -10,8 +10,8 @@ export interface IUserCredentials {
   userName: string;
   email: string;
   contactNumber: number | string;
-  departmentId: string;
+  department: string;
   role: `${UserRoles}`;
   password: string;
-  profileImage?: File | string;
+  profileImage?: File;
 }

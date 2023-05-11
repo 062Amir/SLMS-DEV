@@ -19,6 +19,11 @@ export class SidebarService {
       roles: [UserRoles.ADMIN],
     },
     {
+      text: "Hod's",
+      path: '/hods',
+      roles: [UserRoles.ADMIN],
+    },
+    {
       text: 'Staff',
       path: '/staff',
       roles: [UserRoles.HOD],

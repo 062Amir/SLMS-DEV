@@ -2,7 +2,7 @@
 
 @import "~bootstrap/dist/css/bootstrap.css";
 @import '~ngx-toastr/toastr';
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
 
 body {
   position: relative;
@@ -24,6 +24,10 @@ body.push {
 
 .bg-orange {
   background-color: #E65100;
+}
+
+.bg-grey-light {
+  background-color: #FAFAFA;
 }
 
 .details-label {

@@ -65,6 +65,10 @@ export enum QueryBuilderKeys {
   DEPARTMENT_LIST = "department_list",
 }
 
+export enum PopulateKeys {
+  DEPARTMENT = "department",
+}
+
 export enum ImageMimeType {
   "image/png" = "png",
   "image/jpeg" = "jpg",

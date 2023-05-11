@@ -15,11 +15,7 @@ export interface ILeaveFilters extends CommonFiltes {
   department?: string;
 }
 
-export interface IStaffFilters extends CommonFiltes {
-  name_like?: string;
-  userName_like?: string;
-  email_like?: string;
-  contactNumber_like?: string;
+export interface IUserFilters extends CommonFiltes {
   department?: string;
-  role?: string;
+  status?: string;
 }

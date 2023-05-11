@@ -7,7 +7,7 @@ const schemas = {
     userName: Joi.string().required(),
     email: Joi.string().email().required(),
     contactNumber: Joi.string().required(),
-    departmentId: Joi.string().required(),
+    department: Joi.string().required(),
     password: Joi.string().required().min(8),
     role: Joi.string().valid(UserRoles.HOD, UserRoles.STAFF).required(),
     profileImage: Joi.any(),

@@ -51,8 +51,8 @@ const buildQuery = (queryBuilderKey: `${QueryBuilderKeys}`, req: Request, defaul
           },
         ],
       };
-      if (req.query.departmentId) {
-        query.$and.push({ departmentId: { $eq: req.query.departmentId } });
+      if (req.query.department) {
+        query.$and.push({ department: { $eq: req.query.department } });
       }
       if (req.query.status) {
         query.$and.push({ status: { $eq: req.query.status } });

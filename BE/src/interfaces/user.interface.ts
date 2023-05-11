@@ -1,4 +1,5 @@
 import { UserRoles, UserStatus } from "../data/app.constants";
+import { IDepartment } from "./department.interface";
 
 export interface IUser {
   _id?: number | string;
@@ -6,8 +7,7 @@ export interface IUser {
   userName: string;
   email: string;
   contactNumber: string;
-  department?: any;
-  departmentId: any;
+  department: IDepartment | string | null;
   password: string;
   role: UserRoles.ADMIN | UserRoles.HOD | UserRoles.STAFF;
   profileImage?: string;
