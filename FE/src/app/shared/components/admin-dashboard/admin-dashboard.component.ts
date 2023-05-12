@@ -76,7 +76,7 @@ export class AdminDashboardComponent implements OnInit {
     this.loadTotalHodsCounts();
     this.loadActiveHodsCounts();
     this.loadInactiveHodsCounts();
-    this.loadStaffs();
+    this.loadHods();
   }
 
   async loadTotalHodsCounts(): Promise<void> {
@@ -116,7 +116,7 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  async loadStaffs(): Promise<void> {
+  async loadHods(): Promise<void> {
     try {
       this.utilSvc.showSpinner('hods-spinner');
       const filters: IUserFilters = {

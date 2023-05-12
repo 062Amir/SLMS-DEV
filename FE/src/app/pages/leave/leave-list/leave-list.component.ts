@@ -1,27 +1,26 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, debounceTime } from 'rxjs';
-import { AppDefaults, SortBy, UserRoles, UserStatus } from 'src/app/app.constants';
+import { AppDefaults, LeaveStatus, SortBy, UserRoles } from 'src/app/app.constants';
 import { ISortChange, ISortOptions } from 'src/app/core/interfaces/common.interface';
-import { IDepartment } from 'src/app/core/interfaces/department.interface';
-import { IUserFilters } from 'src/app/core/interfaces/filter.interface';
+import { ILeaveFilters } from 'src/app/core/interfaces/filter.interface';
+import { ILeave } from 'src/app/core/interfaces/leave.interface';
 import { IUser } from 'src/app/core/interfaces/user.interface';
 import { AppNotificationService } from 'src/app/core/services/app-notification.service';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { DepartmentService } from 'src/app/core/services/department.service';
-import { UserService } from 'src/app/core/services/user.service';
+import { LeaveService } from 'src/app/core/services/leave.service';
 import { UtilService } from 'src/app/core/services/util.service';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css'],
+  selector: 'app-leave-list',
+  templateUrl: './leave-list.component.html',
+  styleUrls: ['./leave-list.component.css'],
 })
-export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
-  userData: { total: number; data: IUser[] };
-  departmentData: { total: number; data: IDepartment[] };
-  filters: IUserFilters;
+export class LeaveListComponent implements OnInit, AfterViewInit, OnDestroy {
+  leaveData: { total: number; data: ILeave[] };
+  filters: ILeaveFilters;
   pageNumber: number;
   filterForm: FormGroup;
   sort: ISortChange;
@@ -29,31 +28,23 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   sortOptions: ISortOptions[] = [
     {
-      label: '',
-      value: '',
+      label: 'From Date',
+      value: 'fromDate',
     },
     {
-      label: 'Name',
-      value: 'name',
+      label: 'To Date',
+      value: 'toDate',
     },
     {
-      label: 'Email',
-      value: 'email',
-    },
-    {
-      label: 'Contact No.',
-      value: 'contactNumber',
-    },
-    {
-      label: 'Department',
-      value: '',
+      label: 'Reason',
+      value: 'reason',
     },
     {
       label: 'Status',
       value: 'status',
     },
     {
-      label: 'Added On',
+      label: 'Applied On',
       value: 'createdAt',
     },
     {
@@ -66,37 +57,41 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     return AppDefaults.PAGE_COUNT as number;
   }
 
-  get userStatusOptions() {
-    return Object.values(UserStatus);
+  get LeaveStatus() {
+    return LeaveStatus;
   }
 
-  get UserStatus() {
-    return UserStatus;
-  }
-
-  get isUserAdmin(): boolean {
-    return this.authSvc.getLoggedInUser.role === UserRoles.ADMIN;
+  get LeaveStatusOptions() {
+    return Object.values(LeaveStatus);
   }
 
   get isUserHod(): boolean {
     return this.authSvc.getLoggedInUser.role === UserRoles.HOD;
   }
 
+  get isUserStaff(): boolean {
+    return this.authSvc.getLoggedInUser.role === UserRoles.STAFF;
+  }
+
+  // get fromMinDate(): NgbDateStruct {
+  //   return this.utilSvc.getNgbDate(new Date());
+  // }
+
+  // get toMinDate(): NgbDateStruct {
+  //   return this.filterForm.controls['fromDate'].value || this.utilSvc.getNgbDate(new Date());
+  // }
+
   constructor(
     public utilSvc: UtilService,
     private notifySvc: AppNotificationService,
-    private userSvc: UserService,
+    private leaveSvc: LeaveService,
     private authSvc: AuthService,
     private formBuilder: FormBuilder,
-    private departmentSvc: DepartmentService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.userData = {
-      total: 0,
-      data: [],
-    };
-    this.departmentData = {
+    this.leaveData = {
       total: 0,
       data: [],
     };
@@ -107,14 +102,17 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     };
     this.pageNumber = 1;
     this.subscriptions = new Subscription();
+    if (this.isUserHod) {
+      this.sortOptions.unshift({ label: 'User', value: '' });
+    }
 
     this.filterForm = this.formBuilder.group({
       search: ['', []],
-      department: ['', []],
       status: ['', []],
+      // fromDate: ['', []],
+      // toDate: ['', []],
     });
 
-    this.loadDepartments();
     this.applyFilters();
   }
 
@@ -124,17 +122,6 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.applyFilters();
       })
     );
-  }
-
-  async loadDepartments(): Promise<void> {
-    try {
-      this.utilSvc.showSpinner();
-      this.departmentData = await this.departmentSvc.getDepartments();
-    } catch (error) {
-      this.notifySvc.error(error);
-    } finally {
-      this.utilSvc.hideSpinner();
-    }
   }
 
   applyFilters(): void {
@@ -149,20 +136,21 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     if (formData.search) {
       this.filters.q = formData.search;
     }
-    if (formData.department) {
-      this.filters.department = formData.department;
-    }
     if (formData.status) {
       this.filters.status = formData.status;
     }
+    // if (formData.fromDate && formData.toDate) {
+    //   this.filters.fromDate = this.utilSvc.getFormattedDate(formData.fromDate).toISOString();
+    //   this.filters.toDate = this.utilSvc.getFormattedDate(formData.toDate).toISOString();
+    // }
 
-    this.loadUsers();
+    this.loadLeaves();
   }
 
-  async loadUsers(): Promise<void> {
+  async loadLeaves(): Promise<void> {
     try {
       this.utilSvc.showSpinner();
-      this.userData = await this.userSvc.getUsers(this.filters);
+      this.leaveData = await this.leaveSvc.getLeaves(this.filters);
     } catch (error) {
       this.notifySvc.error(error);
     } finally {
@@ -172,26 +160,25 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onPageChange(): void {
     this.filters.page = this.pageNumber;
-    this.loadUsers();
+    this.loadLeaves();
   }
 
   onSortChange(sort: ISortChange) {
     this.sort = sort;
     this.filters.sort = sort.sort;
     this.filters.sortBy = sort.sortBy;
-    this.loadUsers();
+    this.loadLeaves();
   }
 
-  async updateUserStatus(user: IUser, status: `${UserStatus}`) {
+  async updateLeaveStatus(leave: ILeave, status: `${LeaveStatus}`) {
     try {
-      const msg = `Are you sure to ${status === UserStatus.ACTIVE ? 'activate' : 'deactivate'} this user?`;
+      const msg = `Are you sure to ${status === LeaveStatus.APPROVED ? 'approve' : 'reject'} this leave?`;
       const result = await this.utilSvc.showConfirmation(msg);
       if (result) {
         this.utilSvc.showSpinner();
-        const action = status === UserStatus.ACTIVE ? 'activate' : 'deactivate';
-        await this.userSvc.updateUserStatus(user._id, action);
-        this.notifySvc.success('User status updated successfully');
-        await this.loadUsers();
+        await this.leaveSvc.updateLeaveStatus(leave._id, status === LeaveStatus.APPROVED ? 'approve' : 'reject');
+        this.notifySvc.success(`Leave ${status === LeaveStatus.APPROVED ? 'approved' : 'rejected'} successfully`);
+        await this.loadLeaves();
       }
     } catch (error) {
       this.notifySvc.error(error);
@@ -200,14 +187,14 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  async deleteUser(user: IUser) {
+  async deleteLeave(leave: ILeave) {
     try {
-      const result = await this.utilSvc.showConfirmation('Are you sure to delete this user?');
+      const result = await this.utilSvc.showConfirmation('Are you sure to delete this leave?');
       if (result) {
         this.utilSvc.showSpinner();
-        await this.userSvc.deleteUser(user._id);
-        this.notifySvc.success('User deleted successfully.');
-        await this.loadUsers();
+        await this.leaveSvc.deleteLeave(leave._id);
+        this.notifySvc.success('Leave deleted successfully.');
+        await this.loadLeaves();
       }
     } catch (error) {
       this.notifySvc.error(error);
@@ -216,16 +203,9 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  getUrl = (action: string, user?: IUser): string => {
-    switch (action) {
-      case 'add':
-        return this.isUserAdmin ? '/hods/new' : '/staff/new';
-      case 'details':
-        return this.isUserAdmin ? `/hods/${user?._id}` : `/staff/${user?._id}`;
-      default:
-        return this.isUserAdmin ? '/hods' : '/staff';
-    }
-  };
+  editLeave(leave: ILeave) {
+    this.router.navigate([`/leaves/${leave._id}/edit`]);
+  }
 
   ngOnDestroy(): void {
     if (this.subscriptions) {

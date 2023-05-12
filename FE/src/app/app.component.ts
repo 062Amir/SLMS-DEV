@@ -7,7 +7,7 @@ import { AuthService } from './core/services/auth.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'lsms';
+  title = 'slms';
 
   constructor(public authSvc: AuthService) {}
 }

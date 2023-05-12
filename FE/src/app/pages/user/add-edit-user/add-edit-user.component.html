@@ -4,7 +4,7 @@
       <div class="row align-items-center">
         <div class="col">
           <a (click)="goBack($event)" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
-          <h1 class="showcase-title h2">Add New Hod</h1>
+          <h1 class="showcase-title h2">{{isUserAdmin ? "Add New Hod" : " Add New Staff Member"}}</h1>
         </div>
       </div>
     </section>

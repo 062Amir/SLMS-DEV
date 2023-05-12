@@ -15,7 +15,7 @@ const routes: Routes = [
     path: 'new',
     canActivate: [PostAuthGuard],
     data: {
-      roles: [UserRoles.ADMIN],
+      roles: [UserRoles.ADMIN, UserRoles.HOD],
     },
     component: AddEditUserComponent,
   },

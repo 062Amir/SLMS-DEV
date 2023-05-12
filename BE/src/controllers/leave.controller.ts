@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { HttpStatus, LeaveStatus, UserRoles } from "../data/app.constants";
 import auth from "../middleware/auth.middleware";
-import { createLeave, getLeaves, getSingleLeave, updateLeave, updateLeaveStatus } from "../services/leave.service";
+import { createLeave, deleteLeave, getLeaves, getSingleLeave, updateLeave, updateLeaveStatus } from "../services/leave.service";
 
 const leaveController = Router();
 
@@ -54,6 +54,15 @@ leaveController.post("/:id/reject", auth([UserRoles.HOD]), async (req: Request, 
   try {
     const response = await updateLeaveStatus(req.params.id, LeaveStatus.REJECTED);
     res.status(HttpStatus.OK).json(response);
+  } catch (error: any) {
+    res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
+  }
+});
+
+leaveController.delete("/:id", auth([UserRoles.STAFF]), async (req: Request, res: Response) => {
+  try {
+    const leave = await deleteLeave(req.params.id);
+    res.status(HttpStatus.OK).json(leave);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });
   }

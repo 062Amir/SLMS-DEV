@@ -4,8 +4,8 @@
       <div class="row align-items-center">
         <!-- Greeting View Start -->
         <div class="col">
-          <h1 class="showcase-title"><span>Hello</span> {{loggedInUser?.name || ""}},</h1>
-          <p>Welcome to the LSMS system.</p>
+          <h1 class="showcase-title"><span>Hello</span> {{authSvc.getLoggedInUser?.name || ""}},</h1>
+          <p>Welcome to the SLMS system.</p>
         </div>
         <!-- Greeting View End -->
       </div>
@@ -15,11 +15,38 @@
         <!-- Cards View Start -->
         <div class="col-12 col-md-6 col-lg-4 my-2">
           <div class="card bg-blue text-light card-has-icon card-icon-survey">
-            <ngx-spinner [name]="'count-spinner'" [fullScreen]="false" size="default" type="ball-clip-rotate-multiple">
+            <ngx-spinner [name]="'total-members-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
             </ngx-spinner>
             <div class="card-body">
-              <h1 class="card-title showcase-title">{{staffCount}}</h1>
-              <h5 class="card-label h5">Staff Members</h5>
+              <h1 class="card-title showcase-title">{{counts.totalMembers}}</h1>
+              <h5 class="card-label h5">Total Staff Members</h5>
+            </div>
+          </div>
+        </div>
+        <!-- Cards View End -->
+        <!-- Cards View Start -->
+        <div class="col-12 col-md-6 col-lg-4 my-2">
+          <div class="card bg-success text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'active-members-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
+            </ngx-spinner>
+            <div class="card-body">
+              <h1 class="card-title showcase-title">{{counts.activeMembers}}</h1>
+              <h5 class="card-label h5">Active Member's</h5>
+            </div>
+          </div>
+        </div>
+        <!-- Cards View End -->
+        <!-- Cards View Start -->
+        <div class="col-12 col-md-6 col-lg-4 my-2">
+          <div class="card bg-danger text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'inactive-members-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
+            </ngx-spinner>
+            <div class="card-body">
+              <h1 class="card-title showcase-title">{{counts.inactiveMembers}}</h1>
+              <h5 class="card-label h5">Inactive Member's</h5>
             </div>
           </div>
         </div>
@@ -32,13 +59,13 @@
           <h2>Recent Added Members</h2>
         </div>
         <div class="col-12 col-md-4 text-end">
-          <a [routerLink]="['/leaves']" class="btn btn-primary">View All Members</a>
+          <a [routerLink]="['/staff']" class="btn btn-primary">View All Members</a>
         </div>
       </div>
       <div class="row pt-2">
         <div class="col">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body bg-grey-light px-0 py-1">
               <div class="table-wrapper bg-light table-responsive">
                 <ngx-spinner [name]="'staff-spinner'" [fullScreen]="false" size="default"
                   type="ball-clip-rotate-multiple"> </ngx-spinner>
@@ -57,7 +84,9 @@
                       <td><a class="text-dark" href="tel:{{staff.contactNumber || ''}}">{{staff.contactNumber ||
                           ''}}</a>
                       </td>
-                      <td>{{ staff.userName || "" }}</td>
+                      <td><span class="badge" [ngClass]="utilSvc.getUserStatus(staff)">{{
+                          staff.status }}</span>
+                      </td>
                       <td>
                         {{staff.createdAt | date : 'mediumDate'}}
                       </td>

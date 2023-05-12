@@ -1,0 +1,114 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <h1 class="showcase-title h2">Leaves</h1>
+        </div>
+        <div class="col-md-6 col-5 text-end" *ngIf="!isUserHod">
+          <a routerLink="/leaves/new" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Leave</a>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <form [formGroup]="filterForm">
+        <div class="row mb-4 ">
+          <div class="col-md-6 col-12 mb-2">
+            <div class="form-group">
+              <label for="search" class="form-label">Search</label>
+              <input type="search" class="form-control" id="search" placeholder="Reason..." formControlName="search">
+            </div>
+          </div>
+          <div class="col-md-6 col-12 mb-2">
+            <div class="form-group">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" formControlName="status">
+                <option value="">All</option>
+                <option *ngFor="let option of LeaveStatusOptions" [value]="option">{{option}}</option>
+              </select>
+            </div>
+          </div>
+          <!-- <div class="col-md-3 col-12 mb-2">
+            <div class="form-group">
+              <label for="fromDate" class="form-label">From Date *</label>
+              <div class="input-group">
+                <input class="form-control" id="fromDate" placeholder="yyyy-mm-dd" formControlName="fromDate"
+                  [minDate]="fromMinDate" ngbDatepicker #fromDate="ngbDatepicker">
+                <button class="btn btn-outline-secondary" (click)="fromDate.toggle()" type="button"><i
+                    class="fa-solid fa-calendar-days"></i></button>
+              </div>
+              <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('fromDate', filterForm)">This
+                field is required</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-12 mb-2">
+            <div class="form-group">
+              <label for="toDate" class="form-label">To Date *</label>
+              <div class="input-group">
+                <input class="form-control" id="toDate" placeholder="yyyy-mm-dd" formControlName="toDate"
+                  [minDate]="toMinDate" ngbDatepicker #toDate="ngbDatepicker">
+                <button class="btn btn-outline-secondary" (click)="toDate.toggle()" type="button"><i
+                    class="fa-solid fa-calendar-days"></i></button>
+              </div>
+              <small class="form-text text-danger" *ngIf="utilSvc.isFieldInvalid('toDate', filterForm)">This
+                field is required</small>
+            </div>
+          </div> -->
+        </div>
+      </form>
+      <!-- Table View Start -->
+      <div class="row pt-2">
+        <div class="col">
+          <div class="table-wrapper bg-light table-responsive">
+            <app-table [sortOptions]="sortOptions" [defaultField]="'createdAt'" (sortChange)="onSortChange($event)">
+              <tbody>
+                <tr *ngFor="let leave of leaveData.data">
+                  <td *ngIf="isUserHod">
+                    {{leave.user.name || "" }}
+                  </td>
+                  <td>
+                    {{leave.fromDate | date : 'mediumDate':'GMT'}}
+                  </td>
+                  <td>
+                    {{leave.toDate | date : 'mediumDate':'GMT'}}
+                  </td>
+                  <td>{{ leave.reason || "" }}</td>
+                  <td><span class="badge" [ngClass]="utilSvc.getLeaveStatus(leave)">{{
+                      leave.status }}</span></td>
+                  <td>
+                    {{leave.createdAt | date : 'mediumDate'}}
+                  </td>
+                  <td>
+                    <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/leaves', leave._id]"
+                      ngbTooltip="Leave Details"><i class="fa-solid fa-eye"></i></a>
+                    <button class="btn btn-success btn-sm ms-2"
+                      *ngIf="isUserHod &&  leave.status === LeaveStatus.PENDING"
+                      (click)="updateLeaveStatus(leave, LeaveStatus.APPROVED)" ngbTooltip="Approve Leave"><i
+                        class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-outline-danger btn-sm ms-2"
+                      *ngIf="isUserHod && leave.status === LeaveStatus.PENDING"
+                      (click)="updateLeaveStatus(leave, LeaveStatus.REJECTED)" ngbTooltip="Reject Leave"><i
+                        class="fa-solid fa-xmark"></i></button>
+                    <button class="btn btn-warning btn-sm ms-2" (click)="editLeave(leave)"
+                      *ngIf="isUserStaff && leave.status === LeaveStatus.PENDING" ngbTooltip="Edit Leave"><i
+                        class="fa-solid fa-pencil"></i></button>
+                    <button class="btn btn-outline-danger btn-sm ms-2"
+                      *ngIf="isUserStaff && leave.status === LeaveStatus.PENDING" (click)="deleteLeave(leave)"
+                      ngbTooltip="Delete Leave"><i class="fa-solid fa-trash-can"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </app-table>
+            <div class="text-center" *ngIf="!leaveData.data?.length">
+              <p class="helper-text"><span translate>No records available.</span></p>
+            </div>
+            <ngb-pagination *ngIf="leaveData.total" class="table-pagination" [collectionSize]="leaveData.total"
+              [(page)]="pageNumber" [pageSize]="pageCount" [maxSize]="3" (pageChange)="onPageChange()"
+              aria-label="Default pagination" [boundaryLinks]="true"></ngb-pagination>
+          </div>
+        </div>
+      </div>
+      <!-- Table View End -->
+    </section>
+  </div>
+</div>

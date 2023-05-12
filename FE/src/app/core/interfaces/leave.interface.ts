@@ -1,14 +1,15 @@
+import { LeaveStatus } from 'src/app/app.constants';
 import { IUser } from './user.interface';
+import { IDepartment } from './department.interface';
 
 export interface ILeave {
-  fromDate: string;
-  toDate: string;
+  _id: string;
+  fromDate: Date | string;
+  toDate: Date | string;
   reason: string;
-  status: string;
-  leaveId: string;
-  createdAt: string;
-  userId: string;
-  id?: number;
+  status: `${LeaveStatus}`;
   user: IUser;
-  department: string;
+  department: IDepartment;
+  createdAt: Date | string;
+  updatedAt: Date | string;
 }

@@ -82,7 +82,7 @@ const updateLeave = async (id: string, req: Request): Promise<any> => {
 
   // Checking is leave already exist within date range
   const leaveExistInRange = await isLeaveExistInDateRange(req);
-  if (leaveExistInRange && leaveExistInRange._id !== id) {
+  if (leaveExistInRange && leaveExistInRange._id.toString() !== id) {
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.LEAVE_EXIST_IN_RANGE);
   }
 
@@ -92,7 +92,7 @@ const updateLeave = async (id: string, req: Request): Promise<any> => {
 
 const updateLeaveStatus = async (id: string, status: `${LeaveStatus}`): Promise<any> => {
   // Validating leave before saving into DB
-  const errorMessage = validate(ValidationKeys.UPDATE_LEAVE, { status });
+  const errorMessage = validate(ValidationKeys.UPDATE_LEAVE_STATUS, { status });
   if (errorMessage) {
     throw new AppError(HttpStatus.BAD_REQUEST, errorMessage);
   }
@@ -104,6 +104,21 @@ const updateLeaveStatus = async (id: string, status: `${LeaveStatus}`): Promise<
 
   // TODO: Need to check updated object values
   return await Leave.findByIdAndUpdate(id, { status }).populate(PopulateKeys.USER).populate(PopulateKeys.DEPARTMENT);
+};
+
+const deleteLeave = async (id: string): Promise<any> => {
+  const leave = await getSingleLeave(id);
+  if (!leave) {
+    throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.LEAVE_NOT_EXIST);
+  }
+
+  if (leave.status === LeaveStatus.APPROVED || leave.status === LeaveStatus.REJECTED) {
+    const msg = `${AppMessages.CAN_NOT_DELETE_LEAVE} ${leave.status.toLowerCase()}`;
+    throw new AppError(HttpStatus.BAD_REQUEST, msg);
+  }
+
+  await Leave.deleteOne({ _id: id });
+  return { _id: id };
 };
 
 const isLeaveExistInDateRange = async (req: Request) => {
@@ -118,4 +133,4 @@ const isLeaveExistInDateRange = async (req: Request) => {
   });
 };
 
-export { getLeaves, createLeave, getSingleLeave, updateLeave, updateLeaveStatus };
+export { getLeaves, createLeave, getSingleLeave, updateLeave, updateLeaveStatus, deleteLeave };

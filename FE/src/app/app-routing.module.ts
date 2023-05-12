@@ -36,19 +36,27 @@ const routes: Routes = [
     },
     loadChildren: () => import('./pages/department/department.module').then((m) => m.DepartmentModule),
   },
-  // {
-  //   path: 'leaves',
-  //   canActivate: [PostAuthGuard],
-  //   data: {
-  //     roles: [UserRoles.HOD, UserRoles.STAFF],
-  //   },
-  //   loadChildren: () => import('./pages/leave/leave.module').then((m) => m.LeaveModule),
-  // },
+  {
+    path: 'leaves',
+    canActivate: [PostAuthGuard],
+    data: {
+      roles: [UserRoles.HOD, UserRoles.STAFF],
+    },
+    loadChildren: () => import('./pages/leave/leave.module').then((m) => m.LeaveModule),
+  },
   {
     path: 'hods',
     canActivate: [PostAuthGuard],
     data: {
       roles: [UserRoles.ADMIN],
+    },
+    loadChildren: () => import('./pages/user/user.module').then((m) => m.UserModule),
+  },
+  {
+    path: 'staff',
+    canActivate: [PostAuthGuard],
+    data: {
+      roles: [UserRoles.HOD],
     },
     loadChildren: () => import('./pages/user/user.module').then((m) => m.UserModule),
   },

@@ -3,24 +3,25 @@
     <section class="page-title">
       <div class="row align-items-center">
         <div class="col">
-          <h1 class="showcase-title h2">Hod's</h1>
+          <h1 class="showcase-title h2">{{isUserAdmin ? "Hod's" : "Staff"}} </h1>
         </div>
         <div class="col-md-6 col-6 text-end">
-          <a [routerLink]="getUrl('add')" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New User</a>
+          <a [routerLink]="getUrl('add')" class="btn btn-primary"><i class="fa-solid fa-plus"></i> {{isUserAdmin ? "New
+            Hod" : "New Staff Member"}}</a>
         </div>
       </div>
     </section>
     <section class="page-content mt-4">
       <form [formGroup]="filterForm">
         <div class="row mb-4 ">
-          <div class="col-md-4 col-12 mb-2">
+          <div class=" mb-2" [ngClass]="isUserAdmin ? 'col-md-4 col-12' : 'col-md-6 col-12'">
             <div class="form-group">
               <label for="search" class="form-label">Search</label>
               <input type="search" class="form-control" id="search" placeholder="Name/Email/Contact/Username...."
                 formControlName="search">
             </div>
           </div>
-          <div class="col-md-4 col-12 mb-2">
+          <div class="col-md-4 col-12 mb-2" *ngIf="isUserAdmin">
             <div class="form-group">
               <label for="department" class="form-label">Department</label>
               <select class="form-select" id="department" formControlName="department">
@@ -29,7 +30,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-4 col-12 mb-2">
+          <div class="mb-2" [ngClass]="isUserAdmin ? 'col-md-4 col-12' : 'col-md-6 col-12'">
             <div class="form-group">
               <label for="status" class="form-label">Status</label>
               <select class="form-select" id="status" formControlName="status">

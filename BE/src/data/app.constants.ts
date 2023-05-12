@@ -25,6 +25,7 @@ export enum AppMessages {
   FROM_DATE_GREATER_THAN_TO_DATE = "From date must be greater than to date",
   LEAVE_NOT_EXIST = "User not exist",
   CAN_NOT_UPDATE_LEAVE = "You can't update leave because leave is",
+  CAN_NOT_DELETE_LEAVE = "You can't delete leave because leave is",
 }
 
 export enum SortBy {

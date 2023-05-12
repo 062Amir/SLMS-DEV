@@ -31,7 +31,10 @@ const schemas = {
     name: Joi.string().required(),
   }),
   [ValidationKeys.NEW_LEAVE]: Joi.object({
-    fromDate: Joi.date().required().min(new Date()).message(AppMessages.FROM_DATE_GREATER_THAN_TODAY),
+    fromDate: Joi.date()
+      .required()
+      .min(new Date(new Date().setUTCHours(0, 0, 0, 0)))
+      .message(AppMessages.FROM_DATE_GREATER_THAN_TODAY),
     toDate: Joi.date().required().min(Joi.ref("fromDate")).message(AppMessages.FROM_DATE_GREATER_THAN_TO_DATE),
     reason: Joi.string().required(),
     status: Joi.string().valid(LeaveStatus.PENDING),

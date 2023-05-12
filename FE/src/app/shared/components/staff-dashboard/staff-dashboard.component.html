@@ -4,7 +4,7 @@
       <div class="row align-items-center">
         <!-- Greeting View Start -->
         <div class="col">
-          <h1 class="showcase-title"><span>Hello</span> {{loggedInUser?.name || ""}},</h1>
+          <h1 class="showcase-title"><span>Hello</span> {{authSvc.getLoggedInUser?.name || ""}},</h1>
           <p>Welcome, Plan your leaves as per your need.</p>
         </div>
         <!-- Greeting View End -->
@@ -13,40 +13,53 @@
     <section class="page-content">
       <div class="row">
         <!-- Cards View Start -->
-        <div class="col-12 col-md-6 col-lg-4 my-2">
+        <div class="col-12 col-md-6 col-lg-3 my-2">
           <div class="card bg-blue text-light card-has-icon card-icon-survey">
-            <ngx-spinner [name]="'count-spinner'" [fullScreen]="false" size="default" type="ball-clip-rotate-multiple">
+            <ngx-spinner [name]="'applied-leave-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
             </ngx-spinner>
             <div class="card-body">
               <h1 class="card-title showcase-title">{{counts.applied || 0}}</h1>
               <h5 class="card-label h5">Leaves Applied</h5>
-              <!-- <a [routerLink]="['/']" class="link-white">View All</a> -->
             </div>
           </div>
         </div>
         <!-- Cards View End -->
         <!-- Cards View Start -->
-        <div class="col-12 col-md-6 col-lg-4 my-2">
-          <div class="card bg-teal text-light card-has-icon card-icon-survey">
-            <ngx-spinner [name]="'count-spinner'" [fullScreen]="false" size="default" type="ball-clip-rotate-multiple">
+        <div class="col-12 col-md-6 col-lg-3 my-2">
+          <div class="card bg-warning text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'pending-leave-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
+            </ngx-spinner>
+            <div class="card-body">
+              <h1 class="card-title showcase-title">{{counts.pending || 0}}</h1>
+              <h5 class="card-label h5">Leaves Pending</h5>
+            </div>
+          </div>
+        </div>
+        <!-- Cards View End -->
+        <!-- Cards View Start -->
+        <div class="col-12 col-md-6 col-lg-3 my-2">
+          <div class="card bg-success text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'approved-leave-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
             </ngx-spinner>
             <div class="card-body">
               <h1 class="card-title showcase-title">{{counts.approved || 0}}</h1>
               <h5 class="card-label h5">Leaves Approved</h5>
-              <!-- <a [routerLink]="['/']" class="link-white">View All</a> -->
             </div>
           </div>
         </div>
         <!-- Cards View End -->
         <!-- Cards View Start -->
-        <div class="col-12 col-md-6 col-lg-4 my-2">
-          <div class="card bg-orange text-light card-has-icon card-icon-survey">
-            <ngx-spinner [name]="'count-spinner'" [fullScreen]="false" size="default" type="ball-clip-rotate-multiple">
+        <div class="col-12 col-md-6 col-lg-3 my-2">
+          <div class="card bg-danger text-light card-has-icon card-icon-survey">
+            <ngx-spinner [name]="'rejected-leave-count-spinner'" [fullScreen]="false" size="default"
+              type="ball-clip-rotate-multiple">
             </ngx-spinner>
             <div class="card-body">
               <h1 class="card-title showcase-title">{{counts.rejected || 0}}</h1>
               <h5 class="card-label h5">Leaves Rejected</h5>
-              <!-- <a [routerLink]="['/']" class="link-white">View All</a> -->
             </div>
           </div>
         </div>
@@ -66,7 +79,7 @@
       <div class="row pt-2">
         <div class="col">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body bg-grey-light px-0 py-1">
               <div class="table-wrapper bg-light table-responsive">
                 <ngx-spinner [name]="'leaves-spinner'" [fullScreen]="false" size="default"
                   type="ball-clip-rotate-multiple"> </ngx-spinner>
@@ -74,10 +87,10 @@
                   <tbody>
                     <tr *ngFor="let leave of leaveData.data">
                       <td>
-                        {{leave.fromDate | date : 'mediumDate'}}
+                        {{leave.fromDate | date : 'mediumDate':'GMT'}}
                       </td>
                       <td>
-                        {{leave.toDate | date : 'mediumDate'}}
+                        {{leave.toDate | date : 'mediumDate':'GMT'}}
                       </td>
                       <td>{{ leave.reason || "" }}</td>
                       <td><span class="badge" [ngClass]="utilSvc.getLeaveStatus(leave)">{{
@@ -86,7 +99,7 @@
                         {{leave.createdAt | date : 'mediumDate'}}
                       </td>
                       <td>
-                        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/leaves', leave.leaveId]"
+                        <a class="btn btn-outline-secondary btn-sm" [routerLink]="['/leaves', leave._id]"
                           ngbTooltip="Leave Details"><i class="fa-solid fa-eye"></i></a>
                       </td>
                     </tr>

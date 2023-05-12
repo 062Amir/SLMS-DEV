@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NgbDateStruct, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { UserStatus, leaveStatusTypes } from 'src/app/app.constants';
+import { UserStatus, LeaveStatus } from 'src/app/app.constants';
 import { ConfirmModalComponent } from 'src/app/shared/components/confirm-modal/confirm-modal.component';
 import { v4 as uuid } from 'uuid';
 import { IListResponse } from '../interfaces/common.interface';
@@ -59,20 +59,28 @@ export class UtilService {
     return httpOptions;
   }
 
-  getFormattedDate(date?: NgbDateStruct): Date {
+  getFormattedDate(date?: NgbDateStruct, dayTime?: 'start' | 'end'): Date {
     const newDate: Date = new Date();
     if (!date) {
       return new Date(newDate);
     }
-    return new Date(newDate.setFullYear(date.year, date.month - 1, date.day));
+    let formattedDate = new Date(newDate.setFullYear(date.year, date.month - 1, date.day));
+    if (dayTime) {
+      if (dayTime === 'start') {
+        formattedDate = new Date(formattedDate.setUTCHours(0, 0, 0, 0));
+      } else {
+        formattedDate = new Date(formattedDate.setUTCHours(23, 59, 59, 999));
+      }
+    }
+    return formattedDate;
   }
 
   getNgbDate(date?: string | Date): NgbDateStruct {
     date = date ? new Date(date) : new Date();
     return {
-      day: date.getDate(),
-      month: date.getMonth() + 1,
-      year: date.getFullYear(),
+      day: date.getUTCDate(),
+      month: date.getUTCMonth() + 1,
+      year: date.getUTCFullYear(),
     };
   }
 
@@ -85,11 +93,11 @@ export class UtilService {
 
   getLeaveStatus(leave: ILeave): string {
     switch (leave.status) {
-      case leaveStatusTypes.PENDING:
+      case LeaveStatus.PENDING:
         return 'bg-warning';
-      case leaveStatusTypes.REJECTED:
+      case LeaveStatus.REJECTED:
         return 'bg-danger';
-      case leaveStatusTypes.APPROVED:
+      case LeaveStatus.APPROVED:
         return 'bg-success';
       default:
         return 'bg-secondary';

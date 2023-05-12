@@ -1,0 +1,51 @@
+<div class="page-wrapper page">
+  <div class="container">
+    <section class="page-title">
+      <div class="row align-items-center">
+        <div class="col">
+          <a routerLink="/leaves" class="btn btn-outline-secondary"><i class="fa-solid fa-angle-left"></i> Back</a>
+          <h1 class="showcase-title h2">Leave Details</h1>
+        </div>
+        <div class="col-md-6 col-5 text-end" *ngIf="leaveInfo && isUserHod">
+          <button class="btn btn-success ms-2 my-1" *ngIf="leaveInfo.status === LeaveStatus.PENDING"
+            (click)="updateLeaveStatus(LeaveStatus.APPROVED)"><i class="fa-solid fa-check"></i> Approve</button>
+          <button class="btn btn-outline-danger ms-2 my-1" *ngIf="leaveInfo.status === LeaveStatus.PENDING"
+            (click)="updateLeaveStatus(LeaveStatus.REJECTED)"><i class="fa-solid fa-xmark"></i> Reject</button>
+        </div>
+      </div>
+    </section>
+    <section class="page-content mt-4">
+      <div class="card" *ngIf="leaveInfo">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-12" *ngIf="isUserHod">
+              <label class="details-label">User:</label>
+              <p>{{leaveInfo.user?.name || ""}}</p>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <label class="details-label">From Date:</label>
+              <p>{{leaveInfo.fromDate | date : 'mediumDate':'GMT'}}</p>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <label class="details-label">To Date:</label>
+              <p>{{leaveInfo.toDate | date : 'mediumDate':'GMT'}}</p>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <label class="details-label">Status:</label>
+              <p><span class="badge" [ngClass]="utilSvc.getLeaveStatus(leaveInfo)">{{
+                  leaveInfo.status }}</span></p>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <label class="details-label">Applied On:</label>
+              <p>{{leaveInfo.createdAt | date : 'mediumDate'}}</p>
+            </div>
+            <div [ngClass]="isUserHod ? 'col-8' : 'col-12'">
+              <label class="details-label">Reason:</label>
+              <p>{{leaveInfo.reason || ""}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

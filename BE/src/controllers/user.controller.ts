@@ -31,8 +31,9 @@ userController.get("/:id", auth(), async (req: Request, res: Response) => {
   }
 });
 
-userController.delete("/:id", auth(), async (req: Request, res: Response) => {
+userController.delete("/:id", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
+    // TODO: When user is delete then delete its leaves as well
     const user = await deleteUser(req.params.id);
     res.status(HttpStatus.OK).json(user);
   } catch (error: any) {
@@ -40,7 +41,7 @@ userController.delete("/:id", auth(), async (req: Request, res: Response) => {
   }
 });
 
-userController.post("/", auth([UserRoles.ADMIN]), imageValidator, async (req: Request, res: Response) => {
+userController.post("/", auth([UserRoles.ADMIN, UserRoles.HOD]), imageValidator, async (req: Request, res: Response) => {
   try {
     // TODO: File error to be handle
     let uploadedFileUrl = null;

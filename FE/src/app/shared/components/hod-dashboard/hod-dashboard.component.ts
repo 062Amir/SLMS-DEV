@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UserRoles } from 'src/app/app.constants';
+import { AppDefaults, SortBy, UserRoles, UserStatus } from 'src/app/app.constants';
 import { ISortOptions } from 'src/app/core/interfaces/common.interface';
 import { IUserFilters } from 'src/app/core/interfaces/filter.interface';
 import { IUser } from 'src/app/core/interfaces/user.interface';
 import { AppNotificationService } from 'src/app/core/services/app-notification.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { UserService } from 'src/app/core/services/user.service';
 import { UtilService } from 'src/app/core/services/util.service';
 
 @Component({
@@ -13,10 +14,12 @@ import { UtilService } from 'src/app/core/services/util.service';
   styleUrls: ['./hod-dashboard.component.css'],
 })
 export class HodDashboardComponent implements OnInit {
-  loggedInUser: IUser;
   staffData: { total: number; data: IUser[] };
-  filters: IUserFilters;
-  staffCount: number;
+  counts = {
+    totalMembers: 0,
+    activeMembers: 0,
+    inactiveMembers: 0,
+  };
 
   sortOptions: ISortOptions[] = [
     {
@@ -36,7 +39,7 @@ export class HodDashboardComponent implements OnInit {
       value: '',
     },
     {
-      label: 'Username',
+      label: 'Status',
       value: '',
     },
     {
@@ -50,58 +53,79 @@ export class HodDashboardComponent implements OnInit {
   ];
 
   constructor(
-    private authSvc: AuthService,
+    public authSvc: AuthService,
     public utilSvc: UtilService,
-    private notifySvc: AppNotificationService
-  ) // private staffSvc: StaffService
-  {}
+    private notifySvc: AppNotificationService,
+    private userSvc: UserService
+  ) {}
 
   ngOnInit(): void {
-    this.loggedInUser = this.authSvc.getLoggedInUser;
     this.staffData = {
       total: 0,
       data: [],
     };
-    this.filters = {
-      // _sort: 'createdAt',
-      // _order: 'desc',
-    };
-    this.staffCount = 0;
 
     this.initData();
   }
 
   initData() {
-    this.loadCounts();
+    this.loadTotalMembersCounts();
+    this.loadActiveMembersCounts();
+    this.loadInactiveMembersCounts();
     this.loadStaffs();
   }
 
-  async loadCounts(): Promise<void> {
-    // try {
-    //   this.utilSvc.showSpinner('count-spinner');
-    //   this.staffCount = await this.staffSvc.getStaffsCount({
-    //     department: this.loggedInUser.department,
-    //     role: UserRoles.STAFF,
-    //   });
-    // } catch (error) {
-    //   this.notifySvc.error(error);
-    // } finally {
-    //   this.utilSvc.hideSpinner('count-spinner');
-    // }
+  async loadTotalMembersCounts(): Promise<void> {
+    try {
+      this.utilSvc.showSpinner('total-members-count-spinner');
+      this.counts.totalMembers = await this.userSvc.getUsersCount();
+    } catch (error) {
+      this.notifySvc.error(error);
+    } finally {
+      this.utilSvc.hideSpinner('total-members-count-spinner');
+    }
+  }
+
+  async loadActiveMembersCounts(): Promise<void> {
+    try {
+      this.utilSvc.showSpinner('active-members-count-spinner');
+      this.counts.activeMembers = await this.userSvc.getUsersCount({
+        status: UserStatus.ACTIVE,
+      });
+    } catch (error) {
+      this.notifySvc.error(error);
+    } finally {
+      this.utilSvc.hideSpinner('active-members-count-spinner');
+    }
+  }
+
+  async loadInactiveMembersCounts(): Promise<void> {
+    try {
+      this.utilSvc.showSpinner('inactive-members-count-spinner');
+      this.counts.inactiveMembers = await this.userSvc.getUsersCount({
+        status: UserStatus.INACTIVE,
+      });
+    } catch (error) {
+      this.notifySvc.error(error);
+    } finally {
+      this.utilSvc.hideSpinner('inactive-members-count-spinner');
+    }
   }
 
   async loadStaffs(): Promise<void> {
-    // try {
-    //   this.utilSvc.showSpinner('staff-spinner');
-    //   this.filters._page = 1;
-    //   this.filters._limit = 5;
-    //   this.filters.department = this.loggedInUser.department;
-    //   this.filters.role = UserRoles.STAFF;
-    //   this.staffData = await this.staffSvc.getStaffs(this.filters);
-    // } catch (error) {
-    //   this.notifySvc.error(error);
-    // } finally {
-    //   this.utilSvc.hideSpinner('staff-spinner');
-    // }
+    try {
+      this.utilSvc.showSpinner('staff-spinner');
+      const filters: IUserFilters = {
+        page: 1,
+        limit: 5,
+        sort: AppDefaults.SORT as string,
+        sortBy: SortBy.DESC,
+      };
+      this.staffData = await this.userSvc.getUsers(filters);
+    } catch (error) {
+      this.notifySvc.error(error);
+    } finally {
+      this.utilSvc.hideSpinner('staff-spinner');
+    }
   }
 }

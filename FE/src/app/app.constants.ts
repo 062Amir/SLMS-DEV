@@ -9,7 +9,7 @@ export const apiResourses = {
   register: createUrl('/auth/register'),
   department: createUrl('/departments'),
   user: createUrl('/users'),
-  leaves: createUrl('/Leaves'),
+  leave: createUrl('/leaves'),
 };
 
 export enum AppMessages {
@@ -47,7 +47,7 @@ export enum UserStatus {
 
 export const allowedImageTypes: string[] = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
 
-export enum leaveStatusTypes {
+export enum LeaveStatus {
   PENDING = 'Pending',
   APPROVED = 'Approved',
   REJECTED = 'Rejected',

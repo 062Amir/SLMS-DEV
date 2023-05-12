@@ -1,3 +1,5 @@
+import { LeaveStatus } from 'src/app/app.constants';
+
 interface CommonFiltes {
   q?: string;
   page?: number;
@@ -10,9 +12,11 @@ export interface IDepartmentFilters extends CommonFiltes {}
 
 export interface ILeaveFilters extends CommonFiltes {
   reason_like?: string;
-  status?: string;
-  userId?: string;
+  status?: `${LeaveStatus}`;
+  user?: string;
   department?: string;
+  fromDate?: any;
+  toDate?: any;
 }
 
 export interface IUserFilters extends CommonFiltes {
