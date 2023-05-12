@@ -1,5 +1,5 @@
 import * as Joi from "joi";
-import { UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
+import { AppMessages, LeaveStatus, UserRoles, UserStatus, ValidationKeys } from "../data/app.constants";
 
 const schemas = {
   [ValidationKeys.NEW_USER]: Joi.object({
@@ -20,7 +20,7 @@ const schemas = {
     contactNumber: Joi.string().required(),
     profileImage: Joi.any(),
   }),
-  [ValidationKeys.ACTIVATE_USER]: Joi.object({
+  [ValidationKeys.UPDATE_USER_STATUS]: Joi.object({
     status: Joi.string().valid(UserStatus.ACTIVE, UserStatus.INACTIVE).required(),
   }),
   [ValidationKeys.LOGIN]: Joi.object({
@@ -29,6 +29,20 @@ const schemas = {
   }),
   [ValidationKeys.DEPARTMENT]: Joi.object({
     name: Joi.string().required(),
+  }),
+  [ValidationKeys.NEW_LEAVE]: Joi.object({
+    fromDate: Joi.date().required().min(new Date()).message(AppMessages.FROM_DATE_GREATER_THAN_TODAY),
+    toDate: Joi.date().required().min(Joi.ref("fromDate")).message(AppMessages.FROM_DATE_GREATER_THAN_TO_DATE),
+    reason: Joi.string().required(),
+    status: Joi.string().valid(LeaveStatus.PENDING),
+  }),
+  [ValidationKeys.UPDATE_LEAVE]: Joi.object({
+    fromDate: Joi.date().required().min(new Date()).message(AppMessages.FROM_DATE_GREATER_THAN_TODAY),
+    toDate: Joi.date().required().min(Joi.ref("fromDate")).message(AppMessages.FROM_DATE_GREATER_THAN_TO_DATE),
+    reason: Joi.string().required(),
+  }),
+  [ValidationKeys.UPDATE_LEAVE_STATUS]: Joi.object({
+    status: Joi.string().valid(LeaveStatus.APPROVED, LeaveStatus.REJECTED).required(),
   }),
 };
 

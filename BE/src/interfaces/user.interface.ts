@@ -7,7 +7,7 @@ export interface IUser {
   userName: string;
   email: string;
   contactNumber: string;
-  department: IDepartment | string | null;
+  department: IDepartment | null;
   password: string;
   role: UserRoles.ADMIN | UserRoles.HOD | UserRoles.STAFF;
   profileImage?: string;

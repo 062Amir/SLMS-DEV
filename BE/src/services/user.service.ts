@@ -18,7 +18,7 @@ const getUsers = async (req: Request): Promise<IListResponse> => {
     .limit(queryParams.limit);
 
   const total = await User.countDocuments(query);
-
+  // TODO: Need to check is api returning password
   return {
     data: users,
     total,
@@ -55,7 +55,7 @@ const createUser = async (reqBody: IUser): Promise<IUser> => {
     profileImage: reqBody.profileImage || null,
     status: reqBody.status || UserStatus.INACTIVE,
   });
-  const savedUser = await user.save();
+  const savedUser: any = await user.save();
   return { ...savedUser.toJSON(), password: "", department: await getSingleDepartment(savedUser.department as string) };
 };
 
@@ -65,7 +65,7 @@ const getSingleUser = async (id: string): Promise<IUser | null> => {
 
 const updateUser = async (id: string, reqBody: IUser, updateStatus?: boolean): Promise<any> => {
   // Validating user before saving into DB
-  const errorMessage = validate(updateStatus ? ValidationKeys.ACTIVATE_USER : ValidationKeys.UPDATE_USER, reqBody);
+  const errorMessage = validate(updateStatus ? ValidationKeys.UPDATE_USER_STATUS : ValidationKeys.UPDATE_USER, reqBody);
   if (errorMessage) {
     throw new AppError(HttpStatus.BAD_REQUEST, errorMessage);
   }

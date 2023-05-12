@@ -20,6 +20,11 @@ export enum AppMessages {
   ACCOUNT_CREATED_MAIL_SUBJECT = "SLMS: Account Created",
   ACCOUNT_CREATED_MAIL_TITLE = "Account Created",
   ACCOUNT_CREATED_BTN_TEXT = "Let's Login Now!",
+  LEAVE_EXIST_IN_RANGE = "You have already applied for leave within this date range",
+  FROM_DATE_GREATER_THAN_TODAY = "You can't add leave for previous dates",
+  FROM_DATE_GREATER_THAN_TO_DATE = "From date must be greater than to date",
+  LEAVE_NOT_EXIST = "User not exist",
+  CAN_NOT_UPDATE_LEAVE = "You can't update leave because leave is",
 }
 
 export enum SortBy {
@@ -45,14 +50,18 @@ export enum UserRoles {
 export enum SchemaNames {
   USER = "User",
   DEPARTMENT = "Department",
+  LEAVE = "Leave",
 }
 
 export enum ValidationKeys {
   NEW_USER = "new_user",
   UPDATE_USER = "update_user",
-  ACTIVATE_USER = "activate_user",
+  UPDATE_USER_STATUS = "update_user_status",
   LOGIN = "login",
   DEPARTMENT = "department",
+  NEW_LEAVE = "new_leave",
+  UPDATE_LEAVE = "update_leave",
+  UPDATE_LEAVE_STATUS = "update_leave_status",
 }
 
 export enum UserStatus {
@@ -63,10 +72,18 @@ export enum UserStatus {
 export enum QueryBuilderKeys {
   USER_LIST = "user_list",
   DEPARTMENT_LIST = "department_list",
+  LEAVE_LIST = "leave_list",
 }
 
 export enum PopulateKeys {
   DEPARTMENT = "department",
+  USER = "user",
+}
+
+export enum LeaveStatus {
+  PENDING = "Pending",
+  APPROVED = "Approved",
+  REJECTED = "Rejected",
 }
 
 export enum ImageMimeType {

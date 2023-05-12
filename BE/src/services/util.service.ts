@@ -64,6 +64,32 @@ const buildQuery = (queryBuilderKey: `${QueryBuilderKeys}`, req: Request, defaul
         query.$and.push({ role: { $eq: UserRoles.STAFF } });
       }
       return { query, queryParams };
+    case QueryBuilderKeys.LEAVE_LIST:
+      query = {
+        $and: [
+          {
+            $or: [{ reason: { $regex: req.query.q || "", $options: "i" } }],
+          },
+        ],
+      };
+      if (req.query.fromDate && req.query.toDate) {
+        const date = {
+          fromDate: req.query.fromDate.toString().split("T")[0],
+          toDate: req.query.toDate.toString().split("T")[0],
+        };
+        query.$and.push({ fromDate: { $gte: new Date(date.fromDate) } });
+        query.$and.push({ toDate: { $lte: new Date(date.toDate) } });
+      }
+      if (req.query.status) {
+        query.$and.push({ status: { $eq: req.query.status } });
+      }
+      if (req.user.role === UserRoles.HOD && req.user.department?._id) {
+        query.$and.push({ department: { $eq: req.user.department._id } });
+      }
+      if (req.user.role === UserRoles.STAFF) {
+        query.$and.push({ user: { $eq: req.user._id } });
+      }
+      return { query, queryParams };
 
     default:
       return { query, queryParams };
