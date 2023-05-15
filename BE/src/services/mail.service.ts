@@ -1,7 +1,12 @@
 import * as nodemailer from "nodemailer";
 import { IUser } from "../interfaces/user.interface";
 import * as dotenv from "dotenv";
-import { getAccountActivateTemplate, getAccountCreatedTemplate, getAccountRegisteredTemplate } from "../templates/email.template";
+import {
+  getAccountActivateTemplate,
+  getAccountCreatedTemplate,
+  getAccountRegisteredTemplate,
+  getResetPasswordTemplate,
+} from "../templates/email.template";
 import { AppDefaults, AppMessages } from "../data/app.constants";
 dotenv.config();
 
@@ -46,4 +51,12 @@ const sendAccountCreatedMail = async (userInfo: IUser): Promise<boolean> => {
   return true;
 };
 
-export { sendAccountActivationMail, sendAccountRegisteredMail, sendAccountCreatedMail };
+const sendResetPasswordMail = async (userInfo: IUser, link: string): Promise<boolean> => {
+  message.to = userInfo.email;
+  message.subject = AppMessages.ACCOUNT_RESET_PASS_MAIL_SUBJECT;
+  message.html = getResetPasswordTemplate(userInfo, link);
+  await transporter.sendMail(message);
+  return true;
+};
+
+export { sendAccountActivationMail, sendAccountRegisteredMail, sendAccountCreatedMail, sendResetPasswordMail };

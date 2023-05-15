@@ -5,9 +5,11 @@ import { ILoginCredentials } from "../interfaces/login-credentials.interface";
 import { IUser } from "../interfaces/user.interface";
 import User from "../models/user.model";
 import validate from "../validators/validation";
-import { getSingleDepartment } from "./department.service";
 import { compareBcryptValue, encodeBase64 } from "./util.service";
 import * as jwt from "jsonwebtoken";
+import ResetToken from "../models/reset-token.model";
+import { bcryptValue } from "./util.service";
+import { IUpdatePassword } from "../interfaces/reset.interface";
 
 interface ILoginResponse {
   token: string;
@@ -42,8 +44,47 @@ const login = async (reqBody: ILoginCredentials): Promise<ILoginResponse> => {
   return { token, user };
 };
 
+const resetPassVerifyEmail = async (email: string): Promise<{ user: IUser; link: string }> => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.USER_NOT_EXIST);
+  }
+  let token = await ResetToken.findOne({ userId: user._id });
+  if (token) {
+    await token.deleteOne();
+  }
+
+  const resetToken = encodeBase64(encodeBase64(`${user._id}${new Date().getTime()}`));
+  const hashToken = await bcryptValue(resetToken);
+
+  await new ResetToken({
+    userId: user._id,
+    token: hashToken,
+    createdAt: Date.now(),
+  }).save();
+
+  return {
+    user,
+    link: `${process.env.FRONT_END_URL}reset?token=${resetToken}&id=${user._id}`,
+  };
+};
+
+const updatePassword = async (reqBody: IUpdatePassword) => {
+  let passwordResetToken = await ResetToken.findOne({ userId: reqBody.userId });
+  if (!passwordResetToken || !(await compareBcryptValue(reqBody.token, passwordResetToken.token))) {
+    throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.INVALID_OR_EXPIRE_TOKEN);
+  }
+
+  const hashedPassword = await bcryptValue(reqBody.password);
+  await User.findByIdAndUpdate(reqBody.userId, { password: hashedPassword });
+  const user: any = await User.findById({ _id: reqBody.userId });
+  await passwordResetToken.deleteOne();
+  return { ...user.toJSON(), password: "" };
+};
+
 const logout = (req: Request) => {
   // TODO: Need to implement logout
 };
 
-export { login };
+export { login, resetPassVerifyEmail, updatePassword };

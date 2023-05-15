@@ -5,4 +5,5 @@ export interface IEmailTemplateArgs {
   title: string;
   message: string;
   btnText?: string;
+  link?: string;
 }

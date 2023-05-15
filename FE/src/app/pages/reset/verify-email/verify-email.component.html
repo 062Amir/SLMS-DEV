@@ -1,0 +1,55 @@
+<div class="page-wrapper page mt-4">
+  <div class="container mxw-500">
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-12 text-center">
+        <h2>Reset Password</h2>
+      </div>
+      <div class="col-12 mt-2 mb-4" *ngIf="!requestSent">
+        <small class="faded-text"><em>Enter the email address associated with your account
+            and we'll send you a link to reset your password.</em>
+        </small>
+      </div>
+      <div class="col-12" *ngIf="!requestSent">
+        <form [formGroup]="verifyEmailForm">
+          <div class="row">
+            <div class="col-md-12 col-12 mb-2">
+              <div class="form-group">
+                <label for="email" class="form-label">Email *</label>
+                <input type="email" class="form-control" id="email" placeholder="" formControlName="email">
+                <small class="form-text text-danger"
+                  *ngIf="utilSvc.isFieldInvalid('email', verifyEmailForm, 'required')">This
+                  field is required</small>
+                <small class="form-text text-danger"
+                  *ngIf="utilSvc.isFieldInvalid('email', verifyEmailForm, 'email')">Please
+                  provide valid email</small>
+              </div>
+            </div>
+            <div class="col-12 my-2">
+              <button class="btn btn-primary btn-block" (click)="onSubmit()">Send Reset Request</button>
+            </div>
+            <div class="col-12 mt-2">
+              <a routerLink="/login">Back to Login</a>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-12" *ngIf="requestSent">
+        <div class="row text-center">
+          <div class="col-12">
+            <img class="w-200"
+              src="https://firebasestorage.googleapis.com/v0/b/slms-dev.appspot.com/o/email.webp?alt=media&token=ba77fb8c-f77d-4c1e-b33d-f48dd9409c9a"
+              alt="">
+          </div>
+          <div class="col-12 mt-4 faded-text">
+            <span>
+              We have sent you a link to reset your password, Please check your inbox or spam folder.
+            </span>
+          </div>
+          <div class="col-12">
+            <a routerLink="/login">Back to Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

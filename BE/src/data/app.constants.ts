@@ -20,12 +20,16 @@ export enum AppMessages {
   ACCOUNT_CREATED_MAIL_SUBJECT = "SLMS: Account Created",
   ACCOUNT_CREATED_MAIL_TITLE = "Account Created",
   ACCOUNT_CREATED_BTN_TEXT = "Let's Login Now!",
+  ACCOUNT_RESET_PASS_MAIL_SUBJECT = "SLMS: Reset Password",
+  ACCOUNT_RESET_PASS_MAIL_TITLE = "Reset Password",
+  ACCOUNT_RESET_PASS_BTN_TEXT = "Set New Password",
   LEAVE_EXIST_IN_RANGE = "You have already applied for leave within this date range",
   FROM_DATE_GREATER_THAN_TODAY = "You can't add leave for previous dates",
   FROM_DATE_GREATER_THAN_TO_DATE = "From date must be greater than to date",
   LEAVE_NOT_EXIST = "User not exist",
   CAN_NOT_UPDATE_LEAVE = "You can't update leave because leave is",
   CAN_NOT_DELETE_LEAVE = "You can't delete leave because leave is",
+  INVALID_OR_EXPIRE_TOKEN = "Invalid or expired password reset token",
 }
 
 export enum SortBy {
@@ -40,6 +44,7 @@ export enum AppDefaults {
   EMAIL_SERVICE = "gmail",
   SORT = "createdAt",
   SORT_BY = SortBy.DESC,
+  RESET_TOKEN_EXPIRY = 600, // 600 seconds = 10 minutes
 }
 
 export enum UserRoles {
@@ -52,6 +57,7 @@ export enum SchemaNames {
   USER = "User",
   DEPARTMENT = "Department",
   LEAVE = "Leave",
+  RESET_TOKEN = "Token",
 }
 
 export enum ValidationKeys {

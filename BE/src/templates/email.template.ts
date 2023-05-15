@@ -388,7 +388,7 @@ const getTemplate = (args: IEmailTemplateArgs) => {
                                         <div class="text" style="padding: 0 2.5em; text-align: center;">
                                             <h2>${args.title}</h2>
                                             <h3 style="font-size: 20px;">${args.message}</h3>
-                                            <p><a href=${process.env.FRONT_END_URL} target="_blank"
+                                            <p><a href=${args.link ? args.link : process.env.FRONT_END_URL} target="_blank"
                                                     class="btn btn-primary"> ${args.btnText ? args.btnText : "Let's Visit Now!"}</a></p>
                                         </div>
                                     </td>
@@ -431,4 +431,14 @@ const getAccountCreatedTemplate = (userInfo: IUser) => {
   });
 };
 
-export { getAccountActivateTemplate, getAccountRegisteredTemplate, getAccountCreatedTemplate };
+const getResetPasswordTemplate = (userInfo: IUser, link: string) => {
+  return getTemplate({
+    name: userInfo.name,
+    title: AppMessages.ACCOUNT_RESET_PASS_MAIL_TITLE,
+    message: `We're sending you this email because you requested a password reset. Click on this link to create a new Password:`,
+    btnText: AppMessages.ACCOUNT_RESET_PASS_BTN_TEXT,
+    link,
+  });
+};
+
+export { getAccountActivateTemplate, getAccountRegisteredTemplate, getAccountCreatedTemplate, getResetPasswordTemplate };

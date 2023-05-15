@@ -21,6 +21,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then((m) => m.RegisterModule),
   },
   {
+    path: 'reset',
+    canActivate: [PreAuthGuard],
+    loadChildren: () => import('./pages/reset/reset.module').then((m) => m.ResetModule),
+  },
+  {
     path: 'dashboard',
     canActivate: [PostAuthGuard],
     data: {

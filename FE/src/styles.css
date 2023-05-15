@@ -112,3 +112,20 @@ table {
 .mxw-500 {
   max-width: 500px;
 }
+
+.w-200 {
+  width: 200px;
+}
+
+.w-300 {
+  width: 300px;
+}
+
+.footer {
+  height: 40px;
+  margin-top: 20px;
+}
+
+.faded-text {
+  color: #9E9E9E;
+}

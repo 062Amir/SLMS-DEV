@@ -30,6 +30,9 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  // TODO: Need to add reset password functionality
+  // TODO: Need to add update my profile functionality
+  // TODO: Department name should be unique
   async onSubmit() {
     try {
       if (this.loginForm.invalid) {

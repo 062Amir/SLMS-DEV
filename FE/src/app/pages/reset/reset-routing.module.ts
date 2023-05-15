@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DepartmentListComponent } from './department-list/department-list.component';
+import { ResetComponent } from './reset.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DepartmentListComponent,
+    component: ResetComponent,
   },
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DepartmentRoutingModule {}
+export class ResetRoutingModule {}

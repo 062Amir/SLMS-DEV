@@ -7,6 +7,7 @@ import { IUser } from '../interfaces/user.interface';
 import { UtilService } from './util.service';
 import { StorageService } from './storage.service';
 import { ILoginResponse } from '../interfaces/response.interface';
+import { IUpdatePassword } from '../interfaces/reset.interface';
 
 @Injectable()
 export class AuthService {
@@ -29,6 +30,14 @@ export class AuthService {
 
   async registerUser(payload: FormData): Promise<IUser> {
     return await lastValueFrom(this.http.post<IUser>(apiResourses.register, payload));
+  }
+
+  async verifyEmail(payload: any): Promise<any> {
+    return await lastValueFrom(this.http.post<any>(apiResourses.verifyEmail, payload, this.utilSvc.getHttpOptions()));
+  }
+
+  async updatePassword(payload: IUpdatePassword): Promise<IUser> {
+    return await lastValueFrom(this.http.post<IUser>(apiResourses.updatePassword, payload, this.utilSvc.getHttpOptions()));
   }
 
   logout() {
