@@ -7,6 +7,7 @@ import { IUser } from "../interfaces/user.interface";
 import imageValidator from "../validators/image.validator";
 import { uploadFileOnFirebase } from "../services/upload.service";
 import { sendAccountActivationMail, sendAccountCreatedMail } from "../services/mail.service";
+import { deleteUserLeaves } from "../services/leave.service";
 
 const userController = Router();
 
@@ -33,8 +34,8 @@ userController.get("/:id", auth(), async (req: Request, res: Response) => {
 
 userController.delete("/:id", auth([UserRoles.ADMIN, UserRoles.HOD]), async (req: Request, res: Response) => {
   try {
-    // TODO: When user is delete then delete its leaves as well
     const user = await deleteUser(req.params.id);
+    await deleteUserLeaves(req.params.id);
     res.status(HttpStatus.OK).json(user);
   } catch (error: any) {
     res.status(error?.code || HttpStatus.INTERNAL_SERVER_ERROR).json({ message: error?.message, error });

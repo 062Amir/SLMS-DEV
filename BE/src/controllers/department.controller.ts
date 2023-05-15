@@ -14,7 +14,6 @@ const departmentController = Router();
 */
 departmentController.get("/", async (req: Request, res: Response) => {
   try {
-    // TODO: Need to add sort, filer, pagination  https://youtu.be/0T4GsMYnVN4
     const response = await getDepartments(req);
     res.status(HttpStatus.OK).json(response);
   } catch (error: any) {

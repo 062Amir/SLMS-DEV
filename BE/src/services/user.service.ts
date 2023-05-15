@@ -75,7 +75,6 @@ const updateUser = async (id: string, reqBody: IUser, updateStatus?: boolean): P
     throw new AppError(HttpStatus.NOT_FOUND, AppMessages.USER_NOT_EXIST);
   }
 
-  // TODO: Need to check updated object values
   return await User.findByIdAndUpdate(id, reqBody).populate(PopulateKeys.DEPARTMENT);
 };
 

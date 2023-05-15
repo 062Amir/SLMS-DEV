@@ -86,7 +86,6 @@ const updateLeave = async (id: string, req: Request): Promise<any> => {
     throw new AppError(HttpStatus.BAD_REQUEST, AppMessages.LEAVE_EXIST_IN_RANGE);
   }
 
-  // TODO: Need to check updated object values
   return await Leave.findByIdAndUpdate(id, req.body).populate(PopulateKeys.USER).populate(PopulateKeys.DEPARTMENT);
 };
 
@@ -102,7 +101,6 @@ const updateLeaveStatus = async (id: string, status: `${LeaveStatus}`): Promise<
     throw new AppError(HttpStatus.NOT_FOUND, AppMessages.LEAVE_NOT_EXIST);
   }
 
-  // TODO: Need to check updated object values
   return await Leave.findByIdAndUpdate(id, { status }).populate(PopulateKeys.USER).populate(PopulateKeys.DEPARTMENT);
 };
 
@@ -121,6 +119,10 @@ const deleteLeave = async (id: string): Promise<any> => {
   return { _id: id };
 };
 
+const deleteUserLeaves = async (userId: string) => {
+  return await Leave.deleteMany({ user: userId });
+};
+
 const isLeaveExistInDateRange = async (req: Request) => {
   return await Leave.findOne({
     $and: [
@@ -133,4 +135,4 @@ const isLeaveExistInDateRange = async (req: Request) => {
   });
 };
 
-export { getLeaves, createLeave, getSingleLeave, updateLeave, updateLeaveStatus, deleteLeave };
+export { getLeaves, createLeave, getSingleLeave, updateLeave, updateLeaveStatus, deleteLeave, deleteUserLeaves };
